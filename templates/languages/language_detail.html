@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ language.name }} Interview Questions - TechStack{% endblock %}
+
+{% block content %}
+<div class="bg-white">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="lg:flex lg:items-center lg:justify-between">
+            <div class="flex-1 min-w-0">
+                <h1 class="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">
+                    {{ language.name }}
+                </h1>
+                <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        <i class="fas fa-code flex-shrink-0 mr-1.5 text-gray-400"></i>
+                        Programming Language
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        <i class="fas fa-list flex-shrink-0 mr-1.5 text-gray-400"></i>
+                        {{ topics.count }} Topics
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        <i class="fas fa-question-circle flex-shrink-0 mr-1.5 text-gray-400"></i>
+                        {{ language.questions.count }} Questions
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <p class="text-lg text-gray-700">
+                {{ language.description }}
+            </p>
+        </div>
+
+        <!-- Topics -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold text-gray-900">Topics</h2>
+            <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {% for topic in topics %}
+                    <div class="bg-white overflow-hidden shadow rounded-lg border border-gray-200 topic-card">
+                        <div class="px-4 py-5 sm:p-6">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                <a href="{% url 'topic_detail' language.slug topic.slug %}" class="hover:text-primary-600">
+                                    {{ topic.name }}
+                                </a>
+                            </h3>
+                            <p class="mt-2 text-sm text-gray-500">
+                                {{ topic.description|truncatewords:15 }}
+                            </p>
+                            <div class="mt-4">
+                                <a href="{% url 'topic_detail' language.slug topic.slug %}" class="text-primary-600 hover:text-primary-700 font-medium">
+                                    View Questions <span aria-hidden="true">&rarr;</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-span-full text-center py-8">
+                        <p class="text-gray-500">No topics available for this language yet.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Questions by Difficulty -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold text-gray-900">Interview Questions</h2>
+            
+            <!-- Tabs -->
+            <div class="mt-6">
+                <div class="sm:hidden">
+                    <label for="difficulty-tabs" class="sr-only">Select a difficulty</label>
+                    <select id="difficulty-tabs" name="difficulty-tabs" class="block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <div class="hidden sm:block">
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                            <button class="difficulty-tab border-primary-500 text-primary-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="easy">
+                                Easy
+                            </button>
+                            <button class="difficulty-tab border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="medium">
+                                Medium
+                            </button>
+                            <button class="difficulty-tab border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="hard">
+                                Hard
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questions Lists -->
+            <div class="mt-6">
+                <div id="easy-questions" class="difficulty-content">
+                    {% include 'questions/question_list_partial.html' with questions=easy_questions %}
+                </div>
+                <div id="medium-questions" class="difficulty-content hidden">
+                    {% include 'questions/question_list_partial.html' with questions=medium_questions %}
+                </div>
+                <div id="hard-questions" class="difficulty-content hidden">
+                    {% include 'questions/question_list_partial.html' with questions=hard_questions %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Card hover effect */
+    .topic-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .topic-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Tab animations */
+    .difficulty-tab {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    .difficulty-tab::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #0ea5e9;
+        transition: width 0.3s ease;
+    }
+    
+    .difficulty-tab:hover::after {
+        width: 100%;
+    }
+    
+    /* Animation for content */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .difficulty-content:not(.hidden) {
+        animation: fadeIn 0.5s ease-out;
+    }
+</style>
+
+{% block extra_js %}
+<script>
+    // Tab functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.difficulty-tab');
+        const contents = document.querySelectorAll('.difficulty-content');
+        const select = document.getElementById('difficulty-tabs');
+        
+        function showTab(tabName) {
+            // Hide all content
+            contents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show selected content
+            document.getElementById(tabName + '-questions').classList.remove('hidden');
+            
+            // Update tabs
+            tabs.forEach(tab => {
+                if (tab.dataset.tab === tabName) {
+                    tab.classList.add('border-primary-500', 'text-primary-600');
+                    tab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                } else {
+                    tab.classList.remove('border-primary-500', 'text-primary-600');
+                    tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                }
+            });
+            
+            // Update select
+            if (select) {
+                select.value = tabName;
+            }
+        }
+        
+        // Tab click event
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                showTab(tab.dataset.tab);
+            });
+        });
+        
+        // Select change event
+        if (select) {
+            select.addEventListener('change', () => {
+                showTab(select.value);
+            });
+        }
+        
+        // Animation for topic cards
+        const topicCards = document.querySelectorAll('.topic-card');
+        topicCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100 + (index * 100));
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}  

@@ -1,0 +1,352 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - TechStack{% endblock %}
+
+{% block content %}
+<div class="bg-white">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="lg:flex lg:items-center lg:justify-between">
+            <div class="flex-1 min-w-0">
+                <h1 class="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl profile-header">
+                    My Profile
+                </h1>
+            </div>
+            <div class="mt-5 flex lg:mt-0 lg:ml-4 profile-action">
+                <a href="{% url 'edit_profile' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-105">
+                    <i class="fas fa-edit mr-2"></i>
+                    Edit Profile
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <!-- Profile Information -->
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg profile-card">
+                <div class="px-4 py-5 sm:px-6">
+                    <h2 class="text-lg leading-6 font-medium text-gray-900">
+                        Profile Information
+                    </h2>
+                </div>
+                <div class="border-t border-gray-200">
+                    <div class="flex items-center p-4 profile-avatar">
+                        <div class="flex-shrink-0 h-20 w-20">
+                            {% if user.profile.avatar %}
+                                <img class="h-20 w-20 rounded-full object-cover" src="{{ user.profile.avatar.url }}" alt="{{ user.username }}">
+                            {% else %}
+                                <div class="h-20 w-20 rounded-full bg-primary-100 flex items-center justify-center text-primary-800 text-2xl font-bold">
+                                    {{ user.username|slice:":1"|upper }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-medium text-gray-900">
+                                {{ user.get_full_name|default:user.username }}
+                            </h3>
+                            <p class="text-sm text-gray-500">
+                                {{ user.email }}
+                            </p>
+                        </div>
+                    </div>
+                    <dl class="profile-details">
+                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 profile-detail-item">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Username
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {{ user.username }}
+                            </dd>
+                        </div>
+                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 profile-detail-item">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Full name
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {{ user.get_full_name|default:"Not provided" }}
+                            </dd>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 profile-detail-item">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Email address
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {{ user.email }}
+                            </dd>
+                        </div>
+                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 profile-detail-item">
+                            <dt class="text-sm font-medium text-gray-500">
+                                Bio
+                            </dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {{ user.profile.bio|default:"No bio provided" }}
+                            </dd>
+                        </div>
+                        {% if user.profile.github_url or user.profile.linkedin_url %}
+                            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 profile-detail-item">
+                                <dt class="text-sm font-medium text-gray-500">
+                                    Social links
+                                </dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    <ul class="flex space-x-4">
+                                        {% if user.profile.github_url %}
+                                            <li>
+                                                <a href="{{ user.profile.github_url }}" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-500 transition-colors duration-300">
+                                                    <i class="fab fa-github text-lg"></i>
+                                                    <span class="sr-only">GitHub</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if user.profile.linkedin_url %}
+                                            <li>
+                                                <a href="{{ user.profile.linkedin_url }}" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-500 transition-colors duration-300">
+                                                    <i class="fab fa-linkedin text-lg"></i>
+                                                    <span class="sr-only">LinkedIn</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </dd>
+                            </div>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Bookmarked Questions -->
+            <div class="lg:col-span-2 bookmarks-section">
+                <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                    <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+                        <h2 class="text-lg leading-6 font-medium text-gray-900">
+                            Bookmarked Questions
+                        </h2>
+                        <a href="{% url 'bookmarks' %}" class="text-primary-600 hover:text-primary-700 text-sm transition-all duration-300 hover:translate-x-1">
+                            View All <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                    <div class="border-t border-gray-200">
+                        <ul class="divide-y divide-gray-200">
+                            {% for bookmark in bookmarks|slice:":5" %}
+                                <li class="bookmark-item">
+                                    <a href="{% url 'question_detail' bookmark.question.slug %}" class="block hover:bg-gray-50 transition-colors duration-300">
+                                        <div class="px-4 py-4 sm:px-6">
+                                            <div class="flex items-center justify-between">
+                                                <p class="text-sm font-medium text-primary-600 truncate">
+                                                    {{ bookmark.question.title }}
+                                                </p>
+                                                <div class="ml-2 flex-shrink-0 flex">
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                        {% if bookmark.question.difficulty == 'easy' %}
+                                                            bg-green-100 text-green-800
+                                                        {% elif bookmark.question.difficulty == 'medium' %}
+                                                            bg-yellow-100 text-yellow-800
+                                                        {% else %}
+                                                            bg-red-100 text-red-800
+                                                        {% endif %}
+                                                    ">
+                                                        {{ bookmark.question.get_difficulty_display }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-2 sm:flex sm:justify-between">
+                                                <div class="sm:flex">
+                                                    <p class="flex items-center text-sm text-gray-500">
+                                                        <i class="fas fa-code flex-shrink-0 mr-1.5 text-gray-400"></i>
+                                                        {{ bookmark.question.language.name }}
+                                                    </p>
+                                                    <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                                                        <i class="fas fa-folder flex-shrink-0 mr-1.5 text-gray-400"></i>
+                                                        {{ bookmark.question.category.name }}
+                                                    </p>
+                                                </div>
+                                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                                    <i class="fas fa-calendar flex-shrink-0 mr-1.5 text-gray-400"></i>
+                                                    <p>
+                                                        Bookmarked on {{ bookmark.created_at|date:"M d, Y" }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <li class="px-4 py-8 text-center empty-bookmarks">
+                                    <p class="text-gray-500">You haven't bookmarked any questions yet.</p>
+                                    <a href="{% url 'question_list' %}" class="mt-2 inline-block text-primary-600 hover:text-primary-700 transition-colors duration-300">
+                                        Browse Questions <span aria-hidden="true">&rarr;</span>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Profile animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes fadeInRight {
+        from {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes scaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes borderPulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(14, 165, 233, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
+        }
+    }
+    
+    /* Apply animations to elements */
+    .profile-header {
+        animation: fadeInLeft 0.6s ease-out forwards;
+    }
+    
+    .profile-action {
+        animation: fadeInRight 0.6s ease-out forwards;
+    }
+    
+    .profile-card {
+        animation: fadeInUp 0.8s ease-out forwards;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .profile-avatar {
+        animation: scaleIn 1s ease-out forwards;
+    }
+    
+    .profile-avatar img, .profile-avatar div {
+        transition: transform 0.3s ease;
+    }
+    
+    .profile-avatar:hover img, .profile-avatar:hover div {
+        transform: scale(1.05);
+    }
+    
+    .profile-details {
+        animation: fadeInUp 1s ease-out forwards;
+        animation-delay: 0.2s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+    }
+    
+    .profile-detail-item {
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+        transition: background-color 0.3s ease;
+    }
+    
+    .profile-detail-item:hover {
+        background-color: rgba(14, 165, 233, 0.05);
+    }
+    
+    .bookmarks-section {
+        animation: fadeInRight 1s ease-out forwards;
+        animation-delay: 0.4s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+    }
+    
+    .bookmark-item {
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+        transition: all 0.3s ease;
+    }
+    
+    .bookmark-item:hover {
+        transform: translateX(5px);
+    }
+    
+    .empty-bookmarks {
+        animation: scaleIn 0.8s ease-out forwards;
+        animation-delay: 0.5s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Stagger animation for profile detail items
+        const detailItems = document.querySelectorAll('.profile-detail-item');
+        detailItems.forEach((item, index) => {
+            item.style.animationDelay = `${0.3 + (index * 0.1)}s`;
+        });
+        
+        // Stagger animation for bookmark items
+        const bookmarkItems = document.querySelectorAll('.bookmark-item');
+        bookmarkItems.forEach((item, index) => {
+            item.style.animationDelay = `${0.6 + (index * 0.1)}s`;
+        });
+        
+        // Add pulse animation to avatar on page load
+        const avatar = document.querySelector('.profile-avatar img, .profile-avatar div');
+        if (avatar) {
+            setTimeout(() => {
+                avatar.style.animation = 'borderPulse 2s';
+            }, 1500);
+        }
+        
+        // Add hover effects to social links
+        const socialLinks = document.querySelectorAll('.profile-detail-item a');
+        socialLinks.forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.2)';
+            });
+            
+            link.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %}

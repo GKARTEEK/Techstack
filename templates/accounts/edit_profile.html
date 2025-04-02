@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Profile - TechStack{% endblock %}
+
+{% block content %}
+<div class="bg-white">
+    <div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 page-header">
+            <h1 class="text-3xl font-bold leading-tight text-gray-900">
+                Edit Profile
+            </h1>
+            <p class="mt-2 text-gray-600">
+                Update your personal information and profile settings.
+            </p>
+        </div>
+
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg form-container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-3 form-field">
+                            {{ user_form.first_name|as_crispy_field }}
+                        </div>
+                        <div class="sm:col-span-3 form-field">
+                            {{ user_form.last_name|as_crispy_field }}
+                        </div>
+                        <div class="sm:col-span-6 form-field">
+                            {{ user_form.email|as_crispy_field }}
+                        </div>
+                        <div class="sm:col-span-6 form-field">
+                            {{ profile_form.bio|as_crispy_field }}
+                        </div>
+                        <div class="sm:col-span-6 form-field avatar-field">
+                            <label for="id_avatar" class="block text-sm font-medium text-gray-700">
+                                Profile Picture
+                            </label>
+                            <div class="mt-1 flex items-center">
+                                <div class="flex-shrink-0 h-12 w-12 rounded-full overflow-hidden bg-gray-100 avatar-preview">
+                                    {% if user.profile.avatar %}
+                                        <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="h-full w-full object-cover">
+                                    {% else %}
+                                        <div class="h-full w-full flex items-center justify-center bg-primary-100 text-primary-800 text-xl font-bold">
+                                            {{ user.username|slice:":1"|upper }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="ml-4 avatar-input">
+                                    {{ profile_form.avatar }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sm:col-span-3 form-field">
+                            {{ profile_form.github_url|as_crispy_field }}
+                        </div>
+                        <div class="sm:col-span-3 form-field">
+                            {{ profile_form.linkedin_url|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 form-actions">
+                    <a href="{% url 'profile' %}" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 mr-2 transition-all duration-300 hover:scale-105">
+                        Cancel
+                    </a>
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-105 submit-btn">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Form animations */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes scaleIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(14, 165, 233, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
+        }
+    }
+    
+    /* Apply animations to elements */
+    .page-header {
+        animation: fadeInDown 0.6s ease-out forwards;
+    }
+    
+    .form-container {
+        animation: scaleIn 0.8s ease-out forwards;
+        animation-delay: 0.2s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .form-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .form-field {
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+    
+    .avatar-field {
+        animation: scaleIn 0.8s ease-out forwards;
+        animation-delay: 0.5s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+    }
+    
+    .avatar-preview {
+        transition: transform 0.3s ease;
+        animation: pulse 2s infinite;
+    }
+    
+    .avatar-preview:hover {
+        transform: scale(1.1);
+    }
+    
+    .avatar-input {
+        animation: slideInRight 0.8s ease-out forwards;
+        animation-delay: 0.7s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+    }
+    
+    .form-actions {
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-delay: 0.8s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+    }
+    
+    .submit-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .submit-btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background: rgba(255, 255, 255, 0.5);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%);
+        transform-origin: 50% 50%;
+    }
+    
+    .submit-btn:hover::after {
+        animation: ripple 1s ease-out;
+    }
+    
+    @keyframes ripple {
+        0% {
+            transform: scale(0, 0);
+            opacity: 0.5;
+        }
+        100% {
+            transform: scale(20, 20);
+            opacity: 0;
+        }
+    }
+    
+    /* Form field focus effects */
+    input:focus, textarea:focus, select:focus {
+        transform: translateY(-2px);
+        transition: transform 0.3s ease;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Stagger animation for form fields
+        const formFields = document.querySelectorAll('.form-field');
+        formFields.forEach((field, index) => {
+            field.style.animationDelay = `${0.3 + (index * 0.1)}s`;
+        });
+        
+        // Preview uploaded avatar image
+        const avatarInput = document.querySelector('input[type="file"]');
+        const avatarPreview = document.querySelector('.avatar-preview');
+        
+        if (avatarInput && avatarPreview) {
+            avatarInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // Create or update image element
+                        let img = avatarPreview.querySelector('img');
+                        if (!img) {
+                            avatarPreview.innerHTML = '';
+                            img = document.createElement('img');
+                            img.className = 'h-full w-full object-cover';
+                            avatarPreview.appendChild(img);
+                        }
+                        
+                        img.src = e.target.result;
+                        
+                        // Add animation
+                        avatarPreview.style.animation = 'pulse 1s';
+                        setTimeout(() => {
+                            avatarPreview.style.animation = '';
+                        }, 1000);
+                    }
+                    
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        }
+        
+        // Form validation visual feedback
+        const form = document.querySelector('form');
+        const inputs = form.querySelectorAll('input, textarea, select');
+        
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.form-group').classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.closest('.form-group').classList.remove('focused');
+                
+                if (this.value) {
+                    this.closest('.form-group').classList.add('has-value');
+                } else {
+                    this.closest('.form-group').classList.remove('has-value');
+                }
+            });
+            
+            // Initialize state for pre-filled inputs
+            if (input.value) {
+                input.closest('.form-group').classList.add('has-value');
+            }
+        });
+    });
+</script>
+{% endblock %}

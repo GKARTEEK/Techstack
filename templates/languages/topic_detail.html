@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ topic.name }} - {{ language.name }} - TechStack{% endblock %}
+
+{% block content %}
+<div class="bg-white">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <nav class="flex" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-4">
+                <li>
+                    <div>
+                        <a href="{% url 'home' %}" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-home"></i>
+                            <span class="sr-only">Home</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
+                        <a href="{% url 'language_list' %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            Languages
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
+                        <a href="{% url 'language_detail' language.slug %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                            {{ language.name }}
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
+                        <span class="ml-4 text-sm font-medium text-gray-500">
+                            {{ topic.name }}
+                        </span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="mt-6 lg:flex lg:items-center lg:justify-between">
+            <div class="flex-1 min-w-0">
+                <h1 class="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">
+                    {{ topic.name }}
+                </h1>
+                <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        <i class="fas fa-code flex-shrink-0 mr-1.5 text-gray-400"></i>
+                        {{ language.name }}
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        <i class="fas fa-question-circle flex-shrink-0 mr-1.5 text-gray-400"></i>
+                        {{ questions.count }} Questions
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <p class="text-lg text-gray-700">
+                {{ topic.description }}
+            </p>
+        </div>
+
+        <!-- Questions List -->
+        <div class="mt-10">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Interview Questions</h2>
+            
+            {% if questions %}
+                <div class="space-y-6">
+                    {% for question in questions %}
+                        <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 question-card">
+                            <div class="px-4 py-5 sm:px-6">
+                                <div class="flex items-center justify-between">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                        <a href="{% url 'question_detail' question.slug %}" class="hover:text-primary-600">
+                                            {{ question.title }}
+                                        </a>
+                                    </h3>
+                                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium 
+                                        {% if question.difficulty == 'easy' %}
+                                            bg-green-100 text-green-800
+                                        {% elif question.difficulty == 'medium' %}
+                                            bg-yellow-100 text-yellow-800
+                                        {% else %}
+                                            bg-red-100 text-red-800
+                                        {% endif %}
+                                    ">
+                                        {{ question.get_difficulty_display }}
+                                    </span>
+                                </div>
+                                <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                                    {{ question.category.name }} • Added {{ question.created_at|date:"M d, Y" }}
+                                </p>
+                            </div>
+                            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                                <p class="text-gray-700">{{ question.content|truncatewords:30 }}</p>
+                                <div class="mt-4 flex justify-between">
+                                    <a href="{% url 'question_detail' question.slug %}" class="text-primary-600 hover:text-primary-700">
+                                        Read more <span aria-hidden="true">&rarr;</span>
+                                    </a>
+                                    <div class="flex items-center text-gray-500">
+                                        <i class="far fa-bookmark mr-1"></i>
+                                        <span>{{ question.bookmarks.count }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12 bg-gray-50 rounded-lg">
+                    <i class="fas fa-question-circle text-4xl text-gray-300"></i>
+                    <h3 class="mt-2 text-lg font-medium text-gray-900">No questions available</h3>
+                    <p class="mt-1 text-sm text-gray-500">There are no questions for this topic yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Card hover effect */
+    .question-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .question-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Animation for content */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .question-card {
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Stagger animation of question cards
+        const cards = document.querySelectorAll('.question-card');
+        cards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+        
+        // Smooth scroll to questions when clicking on topic links
+        const topicLinks = document.querySelectorAll('a[href^="#topic-"]');
+        topicLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
