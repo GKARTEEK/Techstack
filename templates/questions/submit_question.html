@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Submit a Question - TechStack{% endblock %}
+
+{% block content %}
+<div class="bg-white perspective-container">
+    <div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="mb-8 page-header">
+            <h1 class="text-3xl font-bold leading-tight text-gray-900 glow-text">
+                Submit a Question
+            </h1>
+            <p class="mt-2 text-gray-600 subtitle-text">
+                Share an interview question with the community. Your submission will be reviewed before being published.
+            </p>
+        </div>
+
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg form-container">
+            <div class="form-particles-container">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            
+            <form method="post" class="submission-form">
+                {% csrf_token %}
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="form-field title-field">
+                        {{ form.title|as_crispy_field }}
+                    </div>
+                    
+                    <div class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2">
+                        <div class="form-field language-field">
+                            {{ form.language|as_crispy_field }}
+                        </div>
+                        <div class="form-field category-field">
+                            {{ form.category|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-field content-field mt-6">
+                        {{ form.content|as_crispy_field }}
+                    </div>
+                    
+                    <div class="form-field code-field mt-6">
+                        {{ form.code_snippet|as_crispy_field }}
+                    </div>
+                    
+                    <div class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2">
+                        <div class="form-field difficulty-field">
+                            {{ form.difficulty|as_crispy_field }}
+                        </div>
+                        <div class="form-field topics-field">
+                            {{ form.topics|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 form-actions">
+                    <a href="{% url 'question_list' %}" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 mr-2 transition-all duration-300 hover:scale-105 cancel-btn">
+                        Cancel
+                    </a>
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-105 submit-btn">
+                        Submit Question
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* 3D and Animation Effects */
+    .perspective-container {
+        perspective: 1000px;
+    }
+    
+    .page-header {
+        animation: slideDown 0.8s ease-out forwards;
+    }
+    
+    .glow-text {
+        text-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+        transition: text-shadow 0.3s ease;
+    }
+    
+    .glow-text:hover {
+        text-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+    }
+    
+    .subtitle-text {
+        animation: fadeIn 1s ease-out forwards;
+        animation-delay: 0.3s;
+        opacity: 0;
+    }
+    
+    .form-container {
+        position: relative;
+        transform-style: preserve-3d;
+        animation: formAppear 1s ease-out forwards;
+        animation-delay: 0.5s;
+        opacity: 0;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+    }
+    
+    .form-particles-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: rgba(14, 165, 233, 0.3);
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    .form-field {
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+        opacity: 0;
+        animation: fieldAppear 0.5s ease-out forwards;
+    }
+    
+    .form-field:hover {
+        transform: translateZ(10px);
+        z-index: 2;
+    }
+    
+    .form-field label {
+        transition: color 0.3s ease;
+    }
+    
+    .form-field:hover label {
+        color: #0ea5e9;
+    }
+    
+    .title-field { animation-delay: 0.6s; }
+    .language-field { animation-delay: 0.7s; }
+    .category-field { animation-delay: 0.8s; }
+    .content-field { animation-delay: 0.9s; }
+    .code-field { animation-delay: 1.0s; }
+    .difficulty-field { animation-delay: 1.1s; }
+    .topics-field { animation-delay: 1.2s; }
+    
+    .form-actions {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 1.3s;
+    }
+    
+    .submit-btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .submit-btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    
+    .submit-btn:hover::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    
+    .cancel-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cancel-btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    
+    .cancel-btn:hover::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    
+    /* Animations */
+    @keyframes slideDown {
+        from { 
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes formAppear {
+        from { 
+            opacity: 0;
+            transform: rotateX(10deg) translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: rotateX(0) translateY(0);
+        }
+    }
+    
+    @keyframes fieldAppear {
+        from { 
+            opacity: 0;
+            transform: translateZ(-10px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateZ(0);
+        }
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0); }
+        25% { transform: translateY(-10px) translateX(5px); }
+        50% { transform: translateY(0) translateX(10px); }
+        75% { transform: translateY(10px) translateX(5px); }
+        100% { transform: translateY(0) translateX(0); }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 3D tilt effect for the form container
+        const formContainer = document.querySelector('.form-container');
+        
+        if (formContainer) {
+            formContainer.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xRotation = ((y - rect.height / 2) / rect.height) * 5;
+                const yRotation = ((x - rect.width / 2) / rect.width) * -5;
+                
+                this.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+            });
+            
+            formContainer.addEventListener('mouseout', function() {
+                this.style.transform = 'perspective(1000px) rotateX(0)

@@ -38,3 +38,9 @@ def search(request):
         'questions': questions,
     }
     return render(request, 'core/search.html', context)
+
+def about(request):
+    return render(request, 'core/about.html')
+
+def contact(request):
+    return render(request, 'core/contact.html')

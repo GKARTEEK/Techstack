@@ -1,207 +1,563 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div class="text-center">
-            <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                <span class="block">Ace Your Technical Interviews</span>
-                <span class="block text-primary-200">with TechStack</span>
-            </h1>
-            <p class="mt-6 max-w-lg mx-auto text-xl text-primary-100 sm:max-w-3xl">
-                A comprehensive repository of interview questions across multiple programming languages.
-                Practice, learn, and prepare for your next technical interview.
-            </p>
-            <div class="mt-10 max-w-md mx-auto sm:flex sm:justify-center md:mt-12">
-                <form action="{% url 'search' %}" method="get" class="w-full">
-                    <div class="flex rounded-md shadow-sm">
-                        <input type="text" name="q" placeholder="Search languages, topics, or questions..." class="py-3 px-4 block w-full rounded-l-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600">
-                        <button type="submit" class="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-r-md text-white bg-primary-900 hover:bg-primary-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
+<div class="perspective-container">
+    <!-- Hero Section with 3D Effects -->
+    <div class="bg-gradient-to-r from-primary-600 to-primary-800 text-white hero-section">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div class="text-center hero-content">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl hero-title">
+                    <span class="block hero-title-line">Ace Your Technical Interviews</span>
+                    <span class="block text-primary-200 hero-subtitle">with TechStack</span>
+                </h1>
+                <p class="mt-6 max-w-lg mx-auto text-xl text-primary-100 sm:max-w-3xl hero-description">
+                    A comprehensive repository of interview questions across multiple programming languages.
+                    Practice, learn, and prepare for your next technical interview.
+                </p>
+                <div class="mt-10 max-w-md mx-auto sm:flex sm:justify-center md:mt-12 search-container">
+                    <form action="{% url 'search' %}" method="get" class="w-full">
+                        <div class="flex rounded-md shadow-sm search-box">
+                            <input type="text" name="q" placeholder="Search languages, topics, or questions..." class="py-3 px-4 block w-full rounded-l-md border-0 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 search-input">
+                            <button type="submit" class="flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-r-md text-white bg-primary-900 hover:bg-primary-950 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 search-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-<!-- Featured Languages -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="text-center">
-        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-            Featured Programming Languages
-        </h2>
-        <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-            Explore interview questions for the most in-demand programming languages.
-        </p>
-    </div>
-
-    <div class="mt-12 grid gap-5 max-w-lg mx-auto lg:grid-cols-3 lg:max-w-none">
-        {% for language in featured_languages %}
-            <div class="flex flex-col rounded-lg shadow-lg overflow-hidden hover-card-effect">
-                <div class="flex-shrink-0 bg-gradient-to-r from-primary-500 to-primary-700 h-48 flex items-center justify-center">
-                    {% if language.logo %}
-                        <img class="h-24 w-auto" src="{{ language.logo.url }}" alt="{{ language.name }}">
-                    {% else %}
-                        <span class="text-5xl font-bold text-white">{{ language.name|slice:":1" }}</span>
-                    {% endif %}
-                </div>
-                <div class="flex-1 bg-white p-6 flex flex-col justify-between">
-                    <div class="flex-1">
-                        <a href="{% url 'language_detail' language.slug %}" class="block mt-2">
-                            <p class="text-xl font-semibold text-gray-900">{{ language.name }}</p>
-                            <p class="mt-3 text-base text-gray-500">{{ language.description|truncatewords:20 }}</p>
-                        </a>
-                    </div>
-                    <div class="mt-6">
-                        <a href="{% url 'language_detail' language.slug %}" class="text-primary-600 hover:text-primary-700">
-                            View Questions <span aria-hidden="true">&rarr;</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {% empty %}
-            <div class="col-span-3 text-center py-8">
-                <p class="text-gray-500">No featured languages available yet.</p>
-            </div>
-        {% endfor %}
+        
+        <!-- Floating Particles -->
+        <div class="particles-container">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
     </div>
 
-    <div class="text-center mt-10">
-        <a href="{% url 'language_list' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-            View All Languages
-        </a>
-    </div>
-</div>
-
-<!-- Trending Questions -->
-<div class="bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="text-center">
-            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                Trending Interview Questions
+    <!-- Featured Languages with 3D Cards -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 featured-languages">
+        <div class="text-center section-header">
+            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl glow-text">
+                Featured Programming Languages
             </h2>
             <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-                Popular questions that are frequently asked in technical interviews.
+                Explore interview questions for the most in-demand programming languages.
             </p>
         </div>
 
-        <div class="mt-12 space-y-4">
-            {% for question in trending_questions %}
-                <div class="bg-white shadow overflow-hidden sm:rounded-lg hover-card-effect">
-                    <div class="px-4 py-5 sm:px-6">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                <a href="{% url 'question_detail' question.slug %}" class="hover:text-primary-600">
-                                    {{ question.title }}
-                                </a>
-                            </h3>
-                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium 
-                                {% if question.difficulty == 'easy' %}
-                                    bg-green-100 text-green-800
-                                {% elif question.difficulty == 'medium' %}
-                                    bg-yellow-100 text-yellow-800
-                                {% else %}
-                                    bg-red-100 text-red-800
-                                {% endif %}
-                            ">
-                                {{ question.get_difficulty_display }}
-                            </span>
-                        </div>
-                        <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                            {{ question.language.name }} • {{ question.category.name }}
-                        </p>
+        <div class="mt-12 grid gap-5 max-w-lg mx-auto lg:grid-cols-3 lg:max-w-none language-cards">
+            {% for language in featured_languages %}
+                <div class="flex flex-col rounded-lg shadow-lg overflow-hidden language-card">
+                    <div class="flex-shrink-0 bg-gradient-to-r from-primary-500 to-primary-700 h-48 flex items-center justify-center card-header">
+                        {% if language.logo %}
+                            <img class="h-24 w-auto language-logo" src="{{ language.logo.url }}" alt="{{ language.name }}">
+                        {% else %}
+                            <span class="text-5xl font-bold text-white language-letter">{{ language.name|slice:":1" }}</span>
+                        {% endif %}
                     </div>
-                    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                        <p class="text-gray-700">{{ question.content|truncatewords:30 }}</p>
-                        <div class="mt-4 flex justify-between">
-                            <a href="{% url 'question_detail' question.slug %}" class="text-primary-600 hover:text-primary-700">
-                                Read more <span aria-hidden="true">&rarr;</span>
+                    <div class="flex-1 bg-white p-6 flex flex-col justify-between card-body">
+                        <div class="flex-1">
+                            <a href="{% url 'language_detail' language.slug %}" class="block mt-2">
+                                <p class="text-xl font-semibold text-gray-900 card-title">{{ language.name }}</p>
+                                <p class="mt-3 text-base text-gray-500 card-description">{{ language.description|truncatewords:20 }}</p>
                             </a>
-                            <div class="flex items-center text-gray-500">
-                                <i class="far fa-bookmark mr-1"></i>
-                                <span>{{ question.bookmarks.count }}</span>
-                            </div>
+                        </div>
+                        <div class="mt-6 card-action">
+                            <a href="{% url 'language_detail' language.slug %}" class="text-primary-600 hover:text-primary-700 card-link">
+                                View Questions <span aria-hidden="true">&rarr;</span>
+                            </a>
                         </div>
                     </div>
                 </div>
             {% empty %}
-                <div class="text-center py-8">
-                    <p class="text-gray-500">No trending questions available yet.</p>
+                <div class="col-span-3 text-center py-8">
+                    <p class="text-gray-500">No featured languages available yet.</p>
                 </div>
             {% endfor %}
         </div>
 
-        <div class="text-center mt-10">
-            <a href="{% url 'question_list' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                Browse All Questions
+        <div class="text-center mt-10 view-all-btn">
+            <a href="{% url 'language_list' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-110">
+                View All Languages
             </a>
         </div>
     </div>
-</div>
 
-<!-- CTA Section -->
-<div class="bg-primary-700">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
-        <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            <span class="block">Ready to ace your next interview?</span>
-            <span class="block text-primary-200">Join our community today.</span>
-        </h2>
-        <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div class="inline-flex rounded-md shadow">
-                <a href="{% url 'account_signup' %}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-600 bg-white hover:bg-primary-50">
-                    Sign up for free
+    <!-- Trending Questions with 3D Cards -->
+    <div class="bg-gray-50 trending-questions">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="text-center section-header">
+                <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl glow-text">
+                    Trending Interview Questions
+                </h2>
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+                    Popular questions that are frequently asked in technical interviews.
+                </p>
+            </div>
+
+            <div class="mt-12 space-y-4 question-cards">
+                {% for question in trending_questions %}
+                    <div class="bg-white shadow overflow-hidden sm:rounded-lg question-card">
+                        <div class="px-4 py-5 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    <a href="{% url 'question_detail' question.slug %}" class="hover:text-primary-600 card-title">
+                                        {{ question.title }}
+                                    </a>
+                                </h3>
+                                <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium 
+                                    {% if question.difficulty == 'easy' %}
+                                        bg-green-100 text-green-800
+                                    {% elif question.difficulty == 'medium' %}
+                                        bg-yellow-100 text-yellow-800
+                                    {% else %}
+                                        bg-red-100 text-red-800
+                                    {% endif %}
+                                    difficulty-badge
+                                ">
+                                    {{ question.get_difficulty_display }}
+                                </span>
+                            </div>
+                            <p class="mt-1 max-w-2xl text-sm text-gray-500 card-meta">
+                                {{ question.language.name }} • {{ question.category.name }}
+                            </p>
+                        </div>
+                        <div class="border-t border-gray-200 px-4 py-5 sm:px-6 card-content">
+                            <p class="text-gray-700 card-excerpt">{{ question.content|truncatewords:30 }}</p>
+                            <div class="mt-4 flex justify-between card-actions">
+                                <a href="{% url 'question_detail' question.slug %}" class="text-primary-600 hover:text-primary-700 card-link">
+                                    Read more <span aria-hidden="true">&rarr;</span>
+                                </a>
+                                <div class="flex items-center text-gray-500 bookmark-count">
+                                    <i class="far fa-bookmark mr-1"></i>
+                                    <span>{{ question.bookmarks.count }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center py-8">
+                        <p class="text-gray-500">No trending questions available yet.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-10 view-all-btn">
+                <a href="{% url 'question_list' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-primary-700 bg-primary-100 hover:bg-primary-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-110">
+                    Browse All Questions
                 </a>
             </div>
-            <div class="ml-3 inline-flex rounded-md shadow">
-                <a href="{% url 'question_list' %}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-500">
-                    Browse Questions
-                </a>
+        </div>
+    </div>
+
+    <!-- CTA Section with 3D Effects -->
+    <div class="bg-primary-700 cta-section">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between cta-container">
+            <h2 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl cta-text">
+                <span class="block cta-title">Ready to ace your next interview?</span>
+                <span class="block text-primary-200 cta-subtitle">Join our community today.</span>
+            </h2>
+            <div class="mt-8 flex lg:mt-0 lg:flex-shrink-0 cta-buttons">
+                <div class="inline-flex rounded-md shadow cta-button-primary">
+                    <a href="{% url 'account_signup' %}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-600 bg-white hover:bg-primary-50 transition-all duration-300 hover:scale-110">
+                        Sign up for free
+                    </a>
+                </div>
+                <div class="ml-3 inline-flex rounded-md shadow cta-button-secondary">
+                    <a href="{% url 'question_list' %}" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-500 transition-all duration-300 hover:scale-110">
+                        Browse Questions
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    /* Animation for the hero section */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    /* 3D and Animation Effects */
+    .perspective-container {
+        perspective: 1000px;
     }
     
-    .text-4xl, .text-xl, .max-w-md {
-        animation: fadeIn 0.8s ease-out forwards;
+    /* Hero Section */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
     }
     
-    .text-xl {
-        animation-delay: 0.2s;
+    .hero-content {
+        position: relative;
+        z-index: 2;
     }
     
-    .max-w-md {
-        animation-delay: 0.4s;
+    .hero-title {
+        opacity: 0;
+        animation: fadeInDown 1s ease-out forwards;
+    }
+    
+    .hero-subtitle {
+        opacity: 0;
+        animation: fadeInUp 1s ease-out forwards;
+        animation-delay: 0.3s;
+    }
+    
+    .hero-description {
+        opacity: 0;
+        animation: fadeInUp 1s ease-out forwards;
+        animation-delay: 0.6s;
+    }
+    
+    .search-container {
+        opacity: 0;
+        animation: fadeInUp 1s ease-out forwards;
+        animation-delay: 0.9s;
+    }
+    
+    .search-box {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .search-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    
+    .search-input {
+        transition: all 0.3s ease;
+    }
+    
+    .search-button {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .search-button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    
+    .search-button:hover::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    
+    /* Particles */
+    .particles-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    
+    /* Featured Languages */
+    .section-header {
+        opacity: 0;
+        animation: fadeInDown 1s ease-out forwards;
+    }
+    
+    .glow-text {
+        text-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+        transition: text-shadow 0.3s ease;
+    }
+    
+    .glow-text:hover {
+        text-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+    }
+    
+    .language-cards {
+        perspective: 1000px;
+    }
+    
+    .language-card {
+        opacity: 0;
+        animation: fadeInUp 1s ease-out forwards;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease, box-shadow 0.6s ease;
+    }
+    
+    .language-card:hover {
+        transform: translateY(-10px) rotateY(5deg);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .card-header {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .language-card:hover .card-header::after {
+        opacity: 1;
+    }
+    
+    .language-logo, .language-letter {
+        transition: transform 0.5s ease;
+    }
+    
+    .language-card:hover .language-logo,
+    .language-card:hover .language-letter {
+        transform: scale(1.1);
+    }
+    
+    .card-title {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .card-title::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background-color: #0ea5e9;
+        transition: width 0.3s ease;
+    }
+    
+    .card-title:hover::after {
+        width: 100%;
+    }
+    
+    .card-link {
+        position: relative;
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+    
+    .card-link:hover {
+        transform: translateX(5px);
+    }
+    
+    .view-all-btn {
+        opacity: 0;
+        animation: fadeInUp 1s ease-out forwards;
+        animation-delay: 1s;
+    }
+    
+    /* Trending Questions */
+    .question-card {
+        opacity: 0;
+        animation: fadeInUp 1s ease-out forwards;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease, box-shadow 0.6s ease;
+    }
+    
+    .question-card:hover {
+        transform: translateY(-5px) rotateX(2deg);
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .difficulty-badge {
+        transition: transform 0.3s ease;
+    }
+    
+    .question-card:hover .difficulty-badge {
+        transform: scale(1.1);
+    }
+    
+    .card-excerpt {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .bookmark-count {
+        transition: transform 0.3s ease;
+    }
+    
+    .question-card:hover .bookmark-count {
+        transform: scale(1.1);
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .cta-container {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .cta-text {
+        opacity: 0;
+        animation: fadeInLeft 1s ease-out forwards;
+    }
+    
+    .cta-buttons {
+        opacity: 0;
+        animation: fadeInRight 1s ease-out forwards;
+        animation-delay: 0.3s;
+    }
+    
+    /* Animations */
+    @keyframes fadeInDown {
+        from { 
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from { 
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeInLeft {
+        from { 
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes fadeInRight {
+        from { 
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0); }
+        25% { transform: translateY(-10px) translateX(5px); }
+        50% { transform: translateY(0) translateX(10px); }
+        75% { transform: translateY(10px) translateX(5px); }
+        100% { transform: translateY(0) translateX(0); }
     }
 </style>
 
 <script>
-    // Add animation to cards when they come into view
     document.addEventListener('DOMContentLoaded', function() {
-        const cards = document.querySelectorAll('.hover-card-effect');
+        // Initialize particles
+        const particlesContainer = document.querySelector('.particles-container');
+        const particles = document.querySelectorAll('.particle');
         
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                    observer.unobserve(entry.target);
-                }
+        particles.forEach((particle, index) => {
+            // Random position
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.left = `${Math.random() * 100}%`;
+            
+            // Random size
+            const size = 3 + Math.random() * 8;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Animation
+            particle.style.animation = `float ${3 + Math.random() * 4}s ease-in-out infinite`;
+            particle.style.animationDelay = `${index * 0.2}s`;
+        });
+        
+        // Staggered animation for language cards
+        const languageCards = document.querySelectorAll('.language-card');
+        languageCards.forEach((card, index) => {
+            card.style.animationDelay = `${0.3 + (index * 0.2)}s`;
+        });
+        
+        // Staggered animation for question cards
+        const questionCards = document.querySelectorAll('.question-card');
+        questionCards.forEach((card, index) => {
+            card.style.animationDelay = `${0.3 + (index * 0.2)}s`;
+        });
+        
+        // 3D tilt effect for language cards
+        languageCards.forEach(card => {
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xRotation = ((y - rect.height / 2) / rect.height) * 5;
+                const yRotation = ((x - rect.width / 2) / rect.width) * -5;
+                
+                this.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) translateY(-10px)`;
             });
-        }, {
-            threshold: 0.1
+            
+            card.addEventListener('mouseout', function() {
+                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
         });
         
-        cards.forEach(card => {
-            observer.observe(card);
+        // Parallax effect for hero section
+        const heroSection = document.querySelector('.hero-section');
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            if (heroSection) {
+                heroSection.style.backgroundPosition = `50% ${scrollPosition * 0.5}px`;
+            }
         });
+        
+        // Interactive search box
+        const searchInput = document.querySelector('.search-input');
+        const searchBox = document.querySelector('.search-box');
+        
+        if (searchInput && searchBox) {
+            searchInput.addEventListener('focus', function() {
+                searchBox.style.transform = 'translateY(-5px) scale(1.02)';
+                searchBox.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.3)';
+            });
+            
+            searchInput.addEventListener('blur', function() {
+                searchBox.style.transform = '';
+                searchBox.style.boxShadow = '';
+            });
+        }
     });
 </script>
 {% endblock %}

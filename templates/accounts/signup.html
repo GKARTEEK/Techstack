@@ -1,0 +1,433 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Sign Up" %} - TechStack{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 perspective-container">
+    <div class="max-w-md w-full space-y-8 signup-container">
+        <div class="text-center signup-header">
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-900 glow-text">
+                {% trans "Sign Up" %}
+            </h2>
+            <p class="mt-2 text-sm text-gray-600 subtitle-text">
+                {% blocktrans %}Join TechStack to access interview questions and contribute to the community.{% endblocktrans %}
+            </p>
+        </div>
+        
+        <div class="mt-8 bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 form-card">
+            <div class="form-particles-container">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            
+            <form class="space-y-6" method="POST" action="{% url 'account_signup' %}">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                    <div class="rounded-md bg-red-50 p-4 error-message">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-circle text-red-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-red-800">
+                                    {% trans "There was a problem with your signup." %}
+                                </h3>
+                                <div class="mt-2 text-sm text-red-700">
+                                    <ul class="list-disc pl-5 space-y-1">
+                                        {% for error in form.non_field_errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="form-field username-field">
+                    {{ form.username|as_crispy_field }}
+                </div>
+                
+                <div class="form-field email-field">
+                    {{ form.email|as_crispy_field }}
+                </div>
+                
+                <div class="form-field password1-field">
+                    {{ form.password1|as_crispy_field }}
+                </div>
+                
+                <div class="form-field password2-field">
+                    {{ form.password2|as_crispy_field }}
+                </div>
+                
+                <div class="signup-actions">
+                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-105 signup-btn">
+                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <i class="fas fa-user-plus text-primary-500 group-hover:text-primary-400"></i>
+                        </span>
+                        {% trans "Sign Up" %}
+                    </button>
+                </div>
+                
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+            </form>
+            
+            <div class="mt-6 social-signup">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="px-2 bg-white text-gray-500">
+                            {% trans "Or sign up with" %}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-3 gap-3">
+                    {% get_providers as socialaccount_providers %}
+                    {% if socialaccount_providers %}
+                        {% for provider in socialaccount_providers %}
+                            <div>
+                                <a href="{% provider_login_url provider.id process='login' %}" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-all duration-300 hover:scale-105 social-btn">
+                                    {% if provider.name == 'Google' %}
+                                        <i class="fab fa-google"></i>
+                                    {% elif provider.name == 'Facebook' %}
+                                        <i class="fab fa-facebook-f"></i>
+                                    {% elif provider.name == 'GitHub' %}
+                                        <i class="fab fa-github"></i>
+                                    {% else %}
+                                        {{ provider.name }}
+                                    {% endif %}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center login-link">
+                <p class="text-sm text-gray-600">
+                    {% trans "Already have an account?" %}
+                    <a href="{% url 'account_login' %}" class="font-medium text-primary-600 hover:text-primary-500 transition-colors duration-300">
+                        {% trans "Sign in" %}
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* 3D and Animation Effects */
+    .perspective-container {
+        perspective: 1000px;
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    }
+    
+    .signup-container {
+        animation: fadeIn 1s ease-out forwards;
+    }
+    
+    .signup-header {
+        animation: slideDown 0.8s ease-out forwards;
+    }
+    
+    .glow-text {
+        text-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+        transition: text-shadow 0.3s ease;
+    }
+    
+    .glow-text:hover {
+        text-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+    }
+    
+    .subtitle-text {
+        animation: fadeIn 1s ease-out forwards;
+        animation-delay: 0.3s;
+        opacity: 0;
+    }
+    
+    .form-card {
+        position: relative;
+        transform-style: preserve-3d;
+        animation: formAppear 1s ease-out forwards;
+        animation-delay: 0.5s;
+        opacity: 0;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        overflow: hidden;
+        transition: transform 0.6s ease, box-shadow 0.6s ease;
+    }
+    
+    .form-card:hover {
+        transform: translateY(-10px) rotateX(5deg);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .form-particles-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .particle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: rgba(14, 165, 233, 0.3);
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    .form-field {
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.5s ease, box-shadow 0.5s ease;
+        opacity: 0;
+        animation: fieldAppear 0.5s ease-out forwards;
+    }
+    
+    .form-field:hover {
+        transform: translateZ(10px);
+        z-index: 2;
+    }
+    
+    .username-field { animation-delay: 0.6s; }
+    .email-field { animation-delay: 0.7s; }
+    .password1-field { animation-delay: 0.8s; }
+    .password2-field { animation-delay: 0.9s; }
+    
+    .signup-actions {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 1s;
+    }
+    
+    .signup-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .signup-btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    
+    .signup-btn:hover::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    
+    .social-signup {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 1.1s;
+    }
+    
+    .social-btn {
+        transition: all 0.3s ease;
+    }
+    
+    .social-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .login-link {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 1.2s;
+    }
+    
+    .error-message {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideDown {
+        from { 
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes formAppear {
+        from { 
+            opacity: 0;
+            transform: rotateX(10deg) translateY(20px);
+        }
+        to { 
+            opacity: 1;
+            transform: rotateX(0) translateY(0);
+        }
+    }
+    
+    @keyframes fieldAppear {
+        from { 
+            opacity: 0;
+            transform: translateZ(-10px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateZ(0);
+        }
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0) translateX(0); }
+        25% { transform: translateY(-10px) translateX(5px); }
+        50% { transform: translateY(0) translateX(10px); }
+        75% { transform: translateY(10px) translateX(5px); }
+        100% { transform: translateY(0) translateX(0); }
+    }
+    
+    @keyframes shake {
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 3D tilt effect for the form card
+        const formCard = document.querySelector('.form-card');
+        
+        if (formCard) {
+            formCard.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xRotation = ((y - rect.height / 2) / rect.height) * 5;
+                const yRotation = ((x - rect.width / 2) / rect.width) * -5;
+                
+                this.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+            });
+            
+            formCard.addEventListener('mouseout', function() {
+                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        }
+        
+        // Animate particles
+        const particles = document.querySelectorAll('.particle');
+        particles.forEach((particle, index) => {
+            // Random position
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.left = `${Math.random() * 100}%`;
+            
+            // Random size
+            const size = 3 + Math.random() * 8;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Animation
+            particle.style.animation = `float ${3 + Math.random() * 4}s ease-in-out infinite`;
+            particle.style.animationDelay = `${index * 0.5}s`;
+        });
+        
+        // Show particles when form is hovered
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('mouseenter', function() {
+                particles.forEach(particle => {
+                    particle.style.opacity = '1';
+                });
+            });
+            
+            form.addEventListener('mouseleave', function() {
+                particles.forEach(particle => {
+                    particle.style.opacity = '0';
+                });
+            });
+        }
+        
+        // Password strength indicator
+        const password1Field = document.querySelector('#id_password1');
+        if (password1Field) {
+            const strengthIndicator = document.createElement('div');
+            strengthIndicator.className = 'mt-1 h-2 rounded-full overflow-hidden bg-gray-200';
+            
+            const strengthBar = document.createElement('div');
+            strengthBar.className = 'h-full bg-red-500 transition-all duration-300';
+            strengthBar.style.width = '0%';
+            
+            strengthIndicator.appendChild(strengthBar);
+            password1Field.parentNode.appendChild(strengthIndicator);
+            
+            password1Field.addEventListener('input', function() {
+                const value = this.value;
+                let strength = 0;
+                
+                if (value.length >= 8) strength += 25;
+                if (/[A-Z]/.test(value)) strength += 25;
+                if (/[0-9]/.test(value)) strength += 25;
+                if (/[^A-Za-z0-9]/.test(value)) strength += 25;
+                
+                strengthBar.style.width = `${strength}%`;
+                
+                if (strength <= 25) {
+                    strengthBar.className = 'h-full bg-red-500 transition-all duration-300';
+                } else if (strength <= 50) {
+                    strengthBar.className = 'h-full bg-yellow-500 transition-all duration-300';
+                } else if (strength <= 75) {
+                    strengthBar.className = 'h-full bg-blue-500 transition-all duration-300';
+                } else {
+                    strengthBar.className = 'h-full bg-green-500 transition-all duration-300';
+                }
+            });
+        }
+        
+        // Form field focus effects
+        const formFields = document.querySelectorAll('.form-field');
+        formFields.forEach(field => {
+            const input = field.querySelector('input');
+            if (input) {
+                input.addEventListener('focus', function() {
+                    field.style.transform = 'translateZ(20px)';
+                    field.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    field.style.transform = 'translateZ(0)';
+                    field.style.boxShadow = 'none';
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

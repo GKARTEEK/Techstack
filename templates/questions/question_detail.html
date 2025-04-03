@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ question.title }} - TechStack{% endblock %}
+
+{% block content %}
+<div class="bg-white perspective-container">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <nav class="flex animate-fade-in" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-4">
+                <li>
+                    <div>
+                        <a href="{% url 'home' %}" class="text-gray-400 hover:text-gray-500 transition-colors duration-300 hover:scale-110 inline-block">
+                            <i class="fas fa-home"></i>
+                            <span class="sr-only">Home</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
+                        <a href="{% url 'language_detail' question.language.slug %}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700 transition-all duration-300 hover:scale-110 inline-block">
+                            {{ question.language.name }}
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-sm"></i>
+                        <a href="{% url 'question_list' %}?difficulty={{ question.difficulty }}" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700 transition-all duration-300 hover:scale-110 inline-block">
+                            {{ question.get_difficulty_display }}
+                        </a>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="mt-6 lg:flex lg:items-center lg:justify-between animate-slide-up">
+            <div class="flex-1 min-w-0">
+                <h1 class="mt-4 text-3xl font-bold leading-tight text-gray-900 sm:text-4xl glow-text">
+                    {{ question.title }}
+                </h1>
+                <div class="mt-2 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+                    <div class="mt-2 flex items-center text-sm text-gray-500 animate-fade-in" style="animation-delay: 0.2s;">
+                        <i class="fas fa-code flex-shrink-0 mr-1.5 text-gray-400"></i>
+                        {{ question.language.name }}
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500 animate-fade-in" style="animation-delay: 0.3s;">
+                        <i class="fas fa-folder flex-shrink-0 mr-1.5 text-gray-400"></i>
+                        {{ question.category.name }}
+                    </div>
+                    <div class="mt-2 flex items-center text-sm text-gray-500 animate-fade-in" style="animation-delay: 0.4s;">
+                        <i class="fas fa-calendar flex-shrink-0 mr-1.5 text-gray-400"></i>
+                        {{ question.created_at|date:"F d, Y" }}
+                    </div>
+                    <div class="mt-2 flex items-center animate-fade-in" style="animation-delay: 0.5s;">
+                        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium 
+                            {% if question.difficulty == 'easy' %}
+                                bg-green-100 text-green-800
+                            {% elif question.difficulty == 'medium' %}
+                                bg-yellow-100 text-yellow-800
+                            {% else %}
+                                bg-red-100 text-red-800
+                            {% endif %}
+                        ">
+                            {{ question.get_difficulty_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 flex lg:mt-0 lg:ml-4 animate-fade-in" style="animation-delay: 0.6s;">
+                {% if user.is_authenticated %}
+                    <form action="{% url 'bookmark_question' question.id %}" method="post" class="bookmark-form">
+                        {% csrf_token %}
+                        <button type="submit" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-110 hover:shadow-lg bookmark-btn">
+                            {% if is_bookmarked %}
+                                <i class="fas fa-bookmark mr-2 text-primary-500"></i> Bookmarked
+                            {% else %}
+                                <i class="far fa-bookmark mr-2"></i> Bookmark
+                            {% endif %}
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'account_login' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                        <i class="far fa-bookmark mr-2"></i> Login to Bookmark
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Question Content -->
+        <div class="mt-8 prose prose-primary max-w-none animate-fade-in" style="animation-delay: 0.7s;">
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg transform-card">
+                <div class="px-4 py-5 sm:px-6">
+                    <h2 class="text-xl font-semibold text-gray-900">Question</h2>
+                </div>
+                <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                    <p class="text-gray-700 whitespace-pre-line">{{ question.content }}</p>
+                    
+                    {% if question.code_snippet %}
+                        <div class="mt-6 code-snippet-container">
+                            <h3 class="text-lg font-medium text-gray-900">Code Snippet</h3>
+                            <div class="mt-2 code-snippet">
+                                <pre>{{ question.code_snippet }}</pre>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mt-6 topics-container">
+                        <h3 class="text-lg font-medium text-gray-900">Topics</h3>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            {% for topic in question.topics.all %}
+                                <a href="{% url 'topic_detail' question.language.slug topic.slug %}" class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-primary-100 text-primary-800 hover:bg-primary-200 transition-all duration-300 hover:scale-110 topic-tag">
+                                    {{ topic.name }}
+                                </a>
+                            {% empty %}
+                                <span class="text-gray-500">No topics assigned</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Questions -->
+        <div class="mt-12 animate-slide-up" style="animation-delay: 0.8s;">
+            <h2 class="text-2xl font-bold text-gray-900 glow-text">Related Questions</h2>
+            <div class="mt-6 space-y-4 related-questions-container">
+                {% for related in related_questions %}
+                    <div class="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 related-question-card">
+                        <div class="px-4 py-4 sm:px-6">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-md font-medium text-gray-900">
+                                    <a href="{% url 'question_detail' related.slug %}" class="hover:text-primary-600 transition-colors duration-300">
+                                        {{ related.title }}
+                                    </a>
+                                </h3>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                    {% if related.difficulty == 'easy' %}
+                                        bg-green-100 text-green-800
+                                    {% elif related.difficulty == 'medium' %}
+                                        bg-yellow-100 text-yellow-800
+                                    {% else %}
+                                        bg-red-100 text-red-800
+                                    {% endif %}
+                                ">
+                                    {{ related.get_difficulty_display }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="text-center py-8">
+                        <p class="text-gray-500">No related questions available.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* 3D and Animation Effects */
+    .perspective-container {
+        perspective: 1000px;
+    }
+    
+    .transform-card {
+        transition: transform 0.6s ease, box-shadow 0.6s ease;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .transform-card:hover {
+        transform: translateY(-10px) rotateX(5deg);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .code-snippet-container {
+        position: relative;
+        transition: transform 0.5s ease;
+        transform-style: preserve-3d;
+    }
+    
+    .code-snippet-container:hover {
+        transform: scale(1.02) translateY(-5px);
+    }
+    
+    .code-snippet {
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        font-family: 'Courier New', monospace;
+        overflow-x: auto;
+        position: relative;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .code-snippet:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .code-snippet::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(14, 165, 233, 0.2), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+        border-radius: 0.5rem;
+    }
+    
+    .code-snippet:hover::before {
+        opacity: 1;
+    }
+    
+    .related-questions-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+    }
+    
+    .related-question-card {
+        transition: all 0.5s ease;
+        transform-style: preserve-3d;
+        transform: perspective(1000px) rotateY(0deg);
+    }
+    
+    .related-question-card:hover {
+        transform: perspective(1000px) rotateY(5deg) translateY(-5px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .topic-tag {
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .topic-tag::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(14, 165, 233, 0.3), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .topic-tag:hover::after {
+        opacity: 1;
+    }
+    
+    .glow-text {
+        text-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+        transition: text-shadow 0.3s ease;
+    }
+    
+    .glow-text:hover {
+        text-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+    }
+    
+    .bookmark-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .bookmark-btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.4) 0%, rgba(14, 165, 233, 0) 70%);
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    
+    .bookmark-btn:hover::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+        from { 
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideInLeft {
+        from { 
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes slideInRight {
+        from { 
+            opacity: 0;
+            transform: translateX(30px);
+        }
+        to { 
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+    
+    .animate-slide-up {
+        animation: slideUp 0.8s ease-out forwards;
+    }
+    
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 3D tilt effect for the question card
+        const card = document.querySelector('.transform-card');
+        
+        if (card) {
+            card.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xRotation = ((y - rect.height / 2) / rect.height) * 10;
+                const yRotation = ((x - rect.width / 2) / rect.width) * -10;
+                
+                this.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) translateY(-10px)`;
+            });
+            
+            card.addEventListener('mouseout', function() {
+                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+            });
+        }
+        
+        // Staggered animation for related question cards
+        const relatedCards = document.querySelectorAll('.related-question-card');
+        relatedCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.5s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 900 + (index * 100));
+        });
+        
+        // Bookmark button animation
+        const bookmarkBtn = document.querySelector('.bookmark-btn');
+        if (bookmarkBtn) {
+            bookmarkBtn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                
+                if (icon.classList.contains('far')) {
+                    // Animate to filled bookmark
+                    icon.classList.remove('far');
+                    icon.classList.add('fas', 'text-primary-500');
+                    
+                    // Add a small animation
+                    this.classList.add('animate-pulse');
+                    setTimeout(() => {
+                        this.classList.remove('animate-pulse');
+                    }, 1000);
+                } else {
+                    // Animate to empty bookmark
+                    icon.classList.remove('fas', 'text-primary-500');
+                    icon.classList.add('far');
+                }
+            });
+        }
+        
+        // Add floating animation to topic tags
+        const topicTags = document.querySelectorAll('.topic-tag');
+        topicTags.forEach((tag, index) => {
+            tag.style.animationDelay = `${index * 0.2}s`;
+            tag.classList.add('animate-float');
+        });
+        
+        // Create particles for the code snippet
+        const codeSnippet = document.querySelector('.code-snippet');
+        if (codeSnippet) {
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('code-particle');
+                particle.style.position = 'absolute';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.backgroundColor = 'rgba(14, 165, 233, 0.5)';
+                particle.style.borderRadius = '50%';
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animation = `float ${2 + Math.random() * 3}s ease-in-out infinite`;
+                particle.style.animationDelay = `${Math.random() * 2}s`;
+                particle.style.opacity = '0';
+                particle.style.pointerEvents = 'none';
+                
+                codeSnippet.appendChild(particle);
+            }
+            
+            codeSnippet.addEventListener('mouseenter', function() {
+                const particles = this.querySelectorAll('.code-particle');
+                particles.forEach(particle => {
+                    particle.style.opacity = '1';
+                });
+            });
+            
+            codeSnippet.addEventListener('mouseleave', function() {
+                const particles = this.querySelectorAll('.code-particle');
+                particles.forEach(particle => {
+                    particle.style.opacity = '0';
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

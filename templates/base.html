@@ -1,283 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}TechStack - Interview Questions Repository{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .code-snippet {
-            background-color: #1e293b;
-            color: #e2e8f0;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #0ea5e9;
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #0284c7;
-        }
-        
-        /* Smooth transitions */
-        a, button {
-            transition: all 0.2s ease-in-out;
-        }
-        
-        /* Card hover effects */
-        .hover-card-effect {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .hover-card-effect:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-    </style>
-    {% block extra_css %}{% endblock %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}TechStack - Interview Questions Repository{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      primary: {
+                          50: '#f0f9ff',
+                          100: '#e0f2fe',
+                          200: '#bae6fd',
+                          300: '#7dd3fc',
+                          400: '#38bdf8',
+                          500: '#0ea5e9',
+                          600: '#0284c7',
+                          700: '#0369a1',
+                          800: '#075985',
+                          900: '#0c4a6e',
+                      },
+                  }
+              }
+          }
+      }
+  </script>
+  <style>
+      .code-snippet {
+          background-color: #1e293b;
+          color: #e2e8f0;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          font-family: 'Courier New', monospace;
+          overflow-x: auto;
+      }
+      
+      /* Navigation hover effects */
+      .nav-link {
+          position: relative;
+          transition: all 0.3s ease;
+      }
+      
+      .nav-link::after {
+          content: '';
+          position: absolute;
+          width: 0;
+          height: 2px;
+          bottom: 0;
+          left: 0;
+          background-color: #0ea5e9;
+          transition: width 0.3s ease;
+      }
+      
+      .nav-link:hover::after {
+          width: 100%;
+      }
+      
+      .nav-link:hover {
+          transform: translateY(-2px);
+      }
+      
+      /* Mobile menu animation */
+      .mobile-menu {
+          transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+          transform-origin: top;
+      }
+      
+      .mobile-menu.hidden {
+          transform: scaleY(0);
+          opacity: 0;
+      }
+      
+      .mobile-menu:not(.hidden) {
+          transform: scaleY(1);
+          opacity: 1;
+      }
+  </style>
+  {% block extra_css %}{% endblock %}
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="{% url 'home' %}" class="text-2xl font-bold text-primary-600">
-                            <span class="text-primary-700">Tech</span><span class="text-primary-500">Stack</span>
-                        </a>
-                    </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="{% url 'home' %}" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Home
-                        </a>
-                        <a href="{% url 'language_list' %}" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Languages
-                        </a>
-                        <a href="{% url 'question_list' %}" class="border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Questions
-                        </a>
-                    </div>
+  <!-- Navigation -->
+  <nav class="bg-white shadow-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16">
+              <div class="flex">
+                  <div class="flex-shrink-0 flex items-center">
+                      <a href="{% url 'home' %}" class="text-2xl font-bold text-primary-600">
+                          <span class="text-primary-700">Tech</span><span class="text-primary-500">Stack</span>
+                      </a>
+                  </div>
+                  <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                      <a href="{% url 'home' %}" class="nav-link border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                          Home
+                      </a>
+                      <a href="{% url 'language_list' %}" class="nav-link border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                          Languages
+                      </a>
+                      <a href="{% url 'question_list' %}" class="nav-link border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                          Questions
+                      </a>
+                      <a href="{% url 'about' %}" class="nav-link border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                          About
+                      </a>
+                      <a href="{% url 'contact' %}" class="nav-link border-transparent text-gray-500 hover:border-primary-500 hover:text-primary-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                          Contact Us
+                      </a>
+                  </div>
+              </div>
+              <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                  <form action="{% url 'search' %}" method="get" class="relative">
+                      <input type="text" name="q" placeholder="Search..." class="py-1 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                      <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+                          <i class="fas fa-search"></i>
+                      </button>
+                  </form>
+                  
+                  {% if user.is_authenticated %}
+                      <div class="ml-3 relative">
+                          <div class="flex items-center space-x-4">
+                              {% if user.is_staff %}
+                                  <a href="{% url 'admin:index' %}" class="text-gray-500 hover:text-primary-600">
+                                      <i class="fas fa-cog"></i>
+                                      <span class="ml-1">Admin</span>
+                                  </a>
+                              {% endif %}
+                              <a href="{% url 'profile' %}" class="text-gray-500 hover:text-primary-600">
+                                  <i class="fas fa-user-circle"></i>
+                                  <span class="ml-1">{{ user.username }}</span>
+                              </a>
+                              <a href="{% url 'account_logout' %}" class="text-gray-500 hover:text-primary-600">
+                                  <i class="fas fa-sign-out-alt"></i>
+                                  <span class="ml-1">Logout</span>
+                              </a>
+                          </div>
+                      </div>
+                  {% else %}
+                      <div class="ml-3 flex items-center space-x-4">
+                          <a href="{% url 'account_login' %}" class="text-gray-500 hover:text-primary-600">
+                              <i class="fas fa-sign-in-alt"></i>
+                              <span class="ml-1">Login</span>
+                          </a>
+                          <a href="{% url 'account_signup' %}" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                              Sign Up
+                          </a>
+                      </div>
+                  {% endif %}
+              </div>
+              
+              <!-- Mobile menu button -->
+              <div class="flex items-center sm:hidden">
+                  <button type="button" class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500" aria-expanded="false">
+                      <span class="sr-only">Open main menu</span>
+                      <i class="fas fa-bars"></i>
+                  </button>
+              </div>
+          </div>
+      </div>
+
+      <!-- Mobile menu, show/hide based on menu state. -->
+      <div class="mobile-menu hidden sm:hidden">
+          <div class="pt-2 pb-3 space-y-1">
+              <a href="{% url 'home' %}" class="bg-primary-50 border-primary-500 text-primary-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                  Home
+              </a>
+              <a href="{% url 'language_list' %}" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                  Languages
+              </a>
+              <a href="{% url 'question_list' %}" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                  Questions
+              </a>
+              <a href="{% url 'about' %}" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                  About
+              </a>
+              <a href="{% url 'contact' %}" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                  Contact Us
+              </a>
+          </div>
+          <div class="pt-4 pb-3 border-t border-gray-200">
+              {% if user.is_authenticated %}
+                  <div class="flex items-center px-4">
+                      <div class="flex-shrink-0">
+                          <i class="fas fa-user-circle text-2xl text-gray-400"></i>
+                      </div>
+                      <div class="ml-3">
+                          <div class="text-base font-medium text-gray-800">{{ user.username }}</div>
+                          <div class="text-sm font-medium text-gray-500">{{ user.email }}</div>
+                      </div>
+                  </div>
+                  <div class="mt-3 space-y-1">
+                      <a href="{% url 'profile' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                          Profile
+                      </a>
+                      {% if user.is_staff %}
+                          <a href="{% url 'admin:index' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                              Admin
+                          </a>
+                      {% endif %}
+                      <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                          Logout
+                      </a>
+                  </div>
+              {% else %}
+                  <div class="mt-3 space-y-1">
+                      <a href="{% url 'account_login' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                          Login
+                      </a>
+                      <a href="{% url 'account_signup' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                          Sign Up
+                      </a>
+                  </div>
+              {% endif %}
+          </div>
+      </div>
+  </nav>
+
+  <!-- Messages -->
+  {% if messages %}
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          {% for message in messages %}
+              <div class="rounded-md p-4 mb-4 {% if message.tags == 'success' %}bg-green-50 text-green-800{% elif message.tags == 'error' %}bg-red-50 text-red-800{% else %}bg-blue-50 text-blue-800{% endif %}">
+                  <div class="flex">
+                      <div class="flex-shrink-0">
+                          {% if message.tags == 'success' %}
+                              <i class="fas fa-check-circle text-green-400"></i>
+                          {% elif message.tags == 'error' %}
+                              <i class="fas fa-exclamation-circle text-red-400"></i>
+                          {% else %}
+                              <i class="fas fa-info-circle text-blue-400"></i>
+                          {% endif %}
+                      </div>
+                      <div class="ml-3">
+                          <p class="text-sm font-medium">{{ message }}</p>
+                      </div>
+                  </div>
+              </div>
+          {% endfor %}
+      </div>
+  {% endif %}
+
+  <!-- Main content -->
+  <main class="flex-grow">
+      {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white mt-auto">
+      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+              <div class="mb-4 md:mb-0">
+                  <p class="text-gray-500 text-sm">
+                      &copy; {% now "Y" %} TechStack. All rights reserved.
+                  </p>
+              </div>
+              <div class="flex space-x-6">
+                  <a href="{% url 'about' %}" class="text-gray-500 hover:text-gray-700">About</a>
+                  <a href="{% url 'contact' %}" class="text-gray-500 hover:text-gray-700">Contact Us</a>
+                  <a href="#" class="text-gray-400 hover:text-gray-500">
+                      <i class="fab fa-github"></i>
+                  </a>
+                  <a href="#" class="text-gray-400 hover:text-gray-500">
+                      <i class="fab fa-twitter"></i>
+                  </a>
+                  <a href="#" class="text-gray-400 hover:text-gray-500">
+                      <i class="fab fa-linkedin"></i>
+                  </a>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+  <script>
+      // Mobile menu toggle with animation
+      document.addEventListener('DOMContentLoaded', function() {
+          const mobileMenuButton = document.querySelector('.mobile-menu-button');
+          const mobileMenu = document.querySelector('.mobile-menu');
+          
+          if (mobileMenuButton && mobileMenu) {
+              mobileMenuButton.addEventListener('click', function() {
+                  mobileMenu.classList.toggle('hidden');
+                  
+                  // Add animation for icon
+                  const icon = this.querySelector('i');
+                  if (mobileMenu.classList.contains('hidden')) {
+                      icon.classList.remove('fa-times');
+                      icon.classList.add('fa-bars');
+                  } else {
+                      icon.classList.remove('fa-bars');
+                      icon.classList.add('fa-times');
+                  }
+              });
+          }
+          
+          // Add active state to current page in navigation
+          const currentPath = window.location.pathname;
+          const navLinks = document.querySelectorAll('.nav-link');
+          
+          navLinks.forEach(link => {
+              const href = link.getAttribute('href');
+              if (href === currentPath || (currentPath.includes(href) && href !== '/')) {
+                  link.classList.add('border-primary-500', 'text-primary-700');
+                  link.classList.remove('border-transparent', 'text-gray-500');
+              }
+          });
+      });
+  </script>
+  {% block extra_js %}{% endblock %}
+  <!-- Enhanced Footer -->
+<footer class="bg-gray-800 text-white mt-auto">
+    <!-- Main Footer Content -->
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Company Info -->
+            <div class="space-y-4">
+                <h3 class="text-xl font-bold text-white">
+                    <span class="text-primary-400">Tech</span><span class="text-primary-300">Stack</span>
+                </h3>
+                <p class="text-gray-300 text-sm">
+                    TechStack is your ultimate resource for technical interview preparation, offering a comprehensive repository of interview questions across multiple programming languages.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-primary-300 transition-colors duration-300">
+                        <i class="fab fa-github text-lg"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary-300 transition-colors duration-300">
+                        <i class="fab fa-twitter text-lg"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary-300 transition-colors duration-300">
+                        <i class="fab fa-linkedin text-lg"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-primary-300 transition-colors duration-300">
+                        <i class="fab fa-facebook text-lg"></i>
+                    </a>
                 </div>
-                <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <form action="{% url 'search' %}" method="get" class="relative">
-                        <input type="text" name="q" placeholder="Search..." class="py-1 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
-                        <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
-                            <i class="fas fa-search"></i>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold text-white">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'home' %}" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">Home</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'language_list' %}" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">Languages</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'question_list' %}" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">Questions</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'about' %}" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">About Us</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'contact' %}" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- About Us -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold text-white">About Us</h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'about' %}#mission" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">Our Mission</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'about' %}#team" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">Our Team</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'about' %}#how-it-works" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">How It Works</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">Careers</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-gray-300 hover:text-primary-300 transition-colors duration-300">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold text-white">Contact Us</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <i class="fas fa-map-marker-alt text-primary-400 mt-1 mr-3"></i>
+                        <span class="text-gray-300">123 Tech Avenue, Suite 456<br>San Francisco, CA 94107</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-phone text-primary-400 mr-3"></i>
+                        <span class="text-gray-300">+1 (555) 123-4567</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-envelope text-primary-400 mr-3"></i>
+                        <span class="text-gray-300">contact@techstack.com</span>
+                    </li>
+                </ul>
+                <div class="pt-2">
+                    <a href="{% url 'contact' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 focus:ring-offset-gray-800 transition-all duration-300">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Subscription -->
+    <div class="border-t border-gray-700">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-lg font-semibold text-white">Subscribe to our newsletter</h3>
+                    <p class="text-gray-300 text-sm mt-1">Stay updated with the latest interview questions and tech trends.</p>
+                </div>
+                <div class="w-full md:w-auto">
+                    <form class="flex flex-col sm:flex-row gap-2">
+                        <input type="email" placeholder="Your email address" class="px-4 py-2 rounded-md focus:ring-primary-500 focus:border-primary-500 block w-full sm:w-64 text-gray-900">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 focus:ring-offset-gray-800 transition-all duration-300">
+                            Subscribe
                         </button>
                     </form>
-                    
-                    {% if user.is_authenticated %}
-                        <div class="ml-3 relative">
-                            <div class="flex items-center space-x-4">
-                                {% if user.is_staff %}
-                                    <a href="{% url 'admin:index' %}" class="text-gray-500 hover:text-primary-600">
-                                        <i class="fas fa-cog"></i>
-                                        <span class="ml-1">Admin</span>
-                                    </a>
-                                {% endif %}
-                                <a href="{% url 'profile' %}" class="text-gray-500 hover:text-primary-600">
-                                    <i class="fas fa-user-circle"></i>
-                                    <span class="ml-1">{{ user.username }}</span>
-                                </a>
-                                <a href="{% url 'account_logout' %}" class="text-gray-500 hover:text-primary-600">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                    <span class="ml-1">Logout</span>
-                                </a>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="ml-3 flex items-center space-x-4">
-                            <a href="{% url 'account_login' %}" class="text-gray-500 hover:text-primary-600">
-                                <i class="fas fa-sign-in-alt"></i>
-                                <span class="ml-1">Login</span>
-                            </a>
-                            <a href="{% url 'account_signup' %}" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-md text-sm font-medium">
-                                Sign Up
-                            </a>
-                        </div>
-                    {% endif %}
-                </div>
-                
-                <!-- Mobile menu button -->
-                <div class="flex items-center sm:hidden">
-                    <button type="button" class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <i class="fas fa-bars"></i>
-                    </button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="mobile-menu hidden sm:hidden">
-            <div class="pt-2 pb-3 space-y-1">
-                <a href="{% url 'home' %}" class="bg-primary-50 border-primary-500 text-primary-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Home
-                </a>
-                <a href="{% url 'language_list' %}" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Languages
-                </a>
-                <a href="{% url 'question_list' %}" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Questions
-                </a>
-            </div>
-            <div class="pt-4 pb-3 border-t border-gray-200">
-                {% if user.is_authenticated %}
-                    <div class="flex items-center px-4">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-user-circle text-2xl text-gray-400"></i>
-                        </div>
-                        <div class="ml-3">
-                            <div class="text-base font-medium text-gray-800">{{ user.username }}</div>
-                            <div class="text-sm font-medium text-gray-500">{{ user.email }}</div>
-                        </div>
-                    </div>
-                    <div class="mt-3 space-y-1">
-                        <a href="{% url 'profile' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-                            Profile
-                        </a>
-                        {% if user.is_staff %}
-                            <a href="{% url 'admin:index' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-                                Admin
-                            </a>
-                        {% endif %}
-                        <a href="{% url 'account_logout' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-                            Logout
-                        </a>
-                    </div>
-                {% else %}
-                    <div class="mt-3 space-y-1">
-                        <a href="{% url 'account_login' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-                            Login
-                        </a>
-                        <a href="{% url 'account_signup' %}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
-                            Sign Up
-                        </a>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
-
-    <!-- Messages -->
-    {% if messages %}
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-            {% for message in messages %}
-                <div class="rounded-md p-4 mb-4 {% if message.tags == 'success' %}bg-green-50 text-green-800{% elif message.tags == 'error' %}bg-red-50 text-red-800{% else %}bg-blue-50 text-blue-800{% endif %}">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            {% if message.tags == 'success' %}
-                                <i class="fas fa-check-circle text-green-400"></i>
-                            {% elif message.tags == 'error' %}
-                                <i class="fas fa-exclamation-circle text-red-400"></i>
-                            {% else %}
-                                <i class="fas fa-info-circle text-blue-400"></i>
-                            {% endif %}
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm font-medium">{{ message }}</p>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <!-- Main content -->
-    <main class="flex-grow">
-        {% block content %}{% endblock %}
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white mt-auto">
+    <!-- Bottom Footer -->
+    <div class="bg-gray-900">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
-                    <p class="text-gray-500 text-sm">
+                    <p class="text-gray-400 text-sm">
                         &copy; {% now "Y" %} TechStack. All rights reserved.
                     </p>
                 </div>
                 <div class="flex space-x-6">
-                    <a href="#" class="text-gray-400 hover:text-gray-500">
-                        <i class="fab fa-github"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-gray-500">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-gray-500">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gray-300 text-sm">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-gray-300 text-sm">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-gray-300 text-sm">Cookie Policy</a>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <script>
-        // Mobile menu toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.querySelector('.mobile-menu-button');
-            const mobileMenu = document.querySelector('.mobile-menu');
-            
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', function() {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
-            
-            // Auto-hide messages after 5 seconds
-            const messages = document.querySelectorAll('.messages .message');
-            if (messages.length > 0) {
-                setTimeout(function() {
-                    messages.forEach(function(message) {
-                        message.style.opacity = '0';
-                        setTimeout(function() {
-                            message.style.display = 'none';
-                        }, 500);
-                    });
-                }, 5000);
+<script>
+    // Mobile menu toggle with animation
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.querySelector('.mobile-menu-button');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+                
+                // Add animation for icon
+                const icon = this.querySelector('i');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            });
+        }
+        
+        // Add active state to current page in navigation
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath || (currentPath.includes(href) && href !== '/')) {
+                link.classList.add('border-primary-500', 'text-primary-700');
+                link.classList.remove('border-transparent', 'text-gray-500');
             }
         });
-    </script>
-    {% block extra_js %}{% endblock %}
+    });
+</script>
 </body>
 </html>
