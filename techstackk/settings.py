@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-gw%x5sc+-eo6m=oiap*1o_*sla)(d=3p#h6$js3yo)-#m=342i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # Set to False in production
 
-ALLOWED_HOSTS = ['techstack-40j5.onrender.com','localhost', '127.0.0.1']  # Change 'yourdomain.com' for deployment
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -120,3 +120,10 @@ CRISPY_TEMPLATE_PACK = 'tailwind'
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Email backend - use console during development to avoid real email sending
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Disable email verification temporarily (you can enable it in production)
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_REQUIRED = False
