@@ -19,105 +19,83 @@
                     <h2 class="text-2xl font-bold">Send Us a Message</h2>
                 </div>
                 <div class="px-4 py-5 sm:p-6">
-                    <form action="#" method="POST" class="space-y-6 contact-form">
+                    <form id="whatsapp-form" class="space-y-6 contact-form">
                         {% csrf_token %}
                         <div class="form-field">
                             <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                            <input type="text" name="name" id="name" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <input type="text" name="name" id="name" required class="mt-1 block w-full rounded-md shadow-sm border-gray-300">
                         </div>
-                        
+
                         <div class="form-field">
                             <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" name="email" id="email" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <input type="email" name="email" id="email" required class="mt-1 block w-full rounded-md shadow-sm border-gray-300">
                         </div>
-                        
+
                         <div class="form-field">
                             <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
-                            <input type="text" name="subject" id="subject" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <input type="text" name="subject" id="subject" required class="mt-1 block w-full rounded-md shadow-sm border-gray-300">
                         </div>
-                        
+
                         <div class="form-field">
                             <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-                            <textarea name="message" id="message" rows="4" class="mt-1 focus:ring-primary-500 focus:border-primary-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                            <textarea name="message" id="message" rows="4" required class="mt-1 block w-full rounded-md shadow-sm border-gray-300"></textarea>
                         </div>
-                        
+
                         <div>
-                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-110 submit-btn">
-                                Send Message
+                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 transition-all">
+                                Send via WhatsApp
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- Contact Information & Social Links -->
+            <!-- Contact Information -->
             <div class="space-y-6">
                 <div class="bg-white shadow overflow-hidden sm:rounded-lg transform-card">
                     <div class="px-4 py-5 sm:px-6 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
-                        <h2 class="text-2xl font-bold">Contact Information</h2>
+                        <h2 class="text-2xl font-bold">Contact Info</h2>
                     </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="space-y-4">
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-envelope text-primary-600 text-xl"></i>
-                                </div>
-                                <div class="ml-3 text-base text-gray-700">
-                                    <p>Email</p>
-                                    <p class="mt-1 font-medium">2200030564cseh@gmail.com</p>
-                                </div>
+                    <div class="px-4 py-5 sm:p-6 space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-primary-600 text-xl"></i>
+                            <div class="ml-3 text-base text-gray-700">
+                                <p>Email</p>
+                                <p class="mt-1 font-medium">2200030564cseh@gmail.com</p>
                             </div>
-                            
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-phone text-primary-600 text-xl"></i>
-                                </div>
-                                <div class="ml-3 text-base text-gray-700">
-                                    <p>Phone</p>
-                                    <p class="mt-1 font-medium">+91 7207085626</p>
-                                </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone text-primary-600 text-xl"></i>
+                            <div class="ml-3 text-base text-gray-700">
+                                <p>Phone</p>
+                                <p class="mt-1 font-medium">+91 7207085626</p>
                             </div>
-                            
-                            <div class="flex items-start">
-                                <div class="flex-shrink-0">
-                                    <i class="fas fa-map-marker-alt text-primary-600 text-xl"></i>
-                                </div>
-                                <div class="ml-3 text-base text-gray-700">
-                                    <p>Address</p>
-                                    <p class="mt-1 font-medium">Narasimha Nagar 2, Pathapatnam<br>Srikakulam, AP 532213</p>
-                                </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-primary-600 text-xl"></i>
+                            <div class="ml-3 text-base text-gray-700">
+                                <p>Address</p>
+                                <p class="mt-1 font-medium">Narasimha Nagar 2, Pathapatnam, Srikakulam, AP 532213</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Social Media Icons -->
+                <!-- Socials -->
                 <div class="bg-white shadow overflow-hidden sm:rounded-lg transform-card">
                     <div class="px-4 py-5 sm:px-6 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
                         <h2 class="text-2xl font-bold">Follow Us</h2>
                     </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex space-x-6">
-                            <a href="https://github.com/GKARTEEK" class="social-icon" target="_blank">
-                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" class="h-8 w-8" />
-                            </a>
-
-                            <a href="https://www.linkedin.com/in/karteek-gavarah/" class="social-icon" target="_blank">
-                                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" class="h-8 w-8" />
-                            </a>
-
-                            <a href="https://wa.me/917207085626?text=Hi%20Karteek%2C%20I%20visited%20your%20TechStack%20site!" class="social-icon" target="_blank">
-                                <i class="fab fa-whatsapp text-2xl text-green-500"></i>
-                                <span class="sr-only">WhatsApp</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- FAQ -->
-                <div class="bg-white shadow overflow-hidden sm:rounded-lg transform-card">
-                    <div class="px-4 py-5 sm:px-6 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
-                        <h2 class="text-2xl font-bold">FAQ</h2>
+                    <div class="px-4 py-5 sm:p-6 flex space-x-6">
+                        <a href="https://github.com/GKARTEEK" target="_blank">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" class="h-8 w-8" />
+                        </a>
+                        <a href="https://www.linkedin.com/in/karteek-gavarah/" target="_blank">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn" class="h-8 w-8" />
+                        </a>
+                        <a href="https://wa.me/917207085626" target="_blank">
+                            <i class="fab fa-whatsapp text-2xl text-green-500"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -125,137 +103,33 @@
     </div>
 </div>
 
-<!-- Style -->
-<style>
-    .perspective-container {
-        perspective: 1000px;
-    }
-
-    .page-header {
-        opacity: 0;
-        animation: fadeInDown 0.8s ease-out forwards;
-    }
-
-    .glow-text {
-        text-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
-        transition: text-shadow 0.3s ease;
-    }
-
-    .glow-text:hover {
-        text-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
-    }
-
-    .subtitle-text {
-        opacity: 0;
-        animation: fadeIn 1s ease-out forwards;
-        animation-delay: 0.3s;
-    }
-
-    .transform-card {
-        opacity: 0;
-        animation: fadeInUp 0.8s ease-out forwards;
-        transform-style: preserve-3d;
-        transition: transform 0.6s ease, box-shadow 0.6s ease;
-    }
-
-    .transform-card:hover {
-        transform: translateY(-10px) rotateX(5deg);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-
-    .form-field {
-        position: relative;
-        transform-style: preserve-3d;
-        transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-
-    .form-field:focus-within {
-        transform: translateZ(10px);
-        z-index: 2;
-    }
-
-    .submit-btn {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .submit-btn::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%);
-        transform: translate(-50%, -50%) scale(0);
-        opacity: 0;
-        transition: transform 0.5s ease, opacity 0.5s ease;
-    }
-
-    .submit-btn:hover::after {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-    }
-
-    .social-icon {
-        transition: all 0.3s ease;
-    }
-
-    .social-icon:hover {
-        transform: translateY(-5px) scale(1.2);
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    @keyframes fadeInDown {
-        from { opacity: 0; transform: translateY(-30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-</style>
-
-<!-- Script -->
+<!-- Decoding WhatsApp Message Script -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const cards = document.querySelectorAll('.transform-card');
-        cards.forEach((card, index) => {
-            card.style.animationDelay = `${0.5 + (index * 0.2)}s`;
-        });
+    document.getElementById('whatsapp-form').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-        cards.forEach(card => {
-            card.addEventListener('mousemove', function (e) {
-                const rect = this.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const xRotation = ((y - rect.height / 2) / rect.height) * 5;
-                const yRotation = ((x - rect.width / 2) / rect.width) * -5;
-                this.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg) translateY(-10px)`;
-            });
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
 
-            card.addEventListener('mouseout', function () {
-                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-            });
-        });
+        const whatsappNumber = '917207085626'; // Replace with your number
+        const text = `Hello Karteek,\n\nI'm ${name}.\nMy email: ${email}\nSubject: ${subject}\n\n${message}`;
+        const encodedMessage = encodeURIComponent(text);
 
-        const formFields = document.querySelectorAll('.form-field input, .form-field textarea');
-        formFields.forEach(field => {
-            field.addEventListener('focus', function () {
-                this.closest('.form-field').style.transform = 'translateZ(20px)';
-                this.closest('.form-field').style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1)';
-            });
-
-            field.addEventListener('blur', function () {
-                this.closest('.form-field').style.transform = 'translateZ(0)';
-                this.closest('.form-field').style.boxShadow = 'none';
-            });
-        });
+        window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
     });
 </script>
+
+<!-- Styling -->
+<style>
+    .glow-text { text-shadow: 0 0 10px rgba(14, 165, 233, 0.3); }
+    .transform-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .transform-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+</style>
 {% endblock %}
