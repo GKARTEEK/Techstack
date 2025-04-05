@@ -2,8 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.http import JsonResponse  # <-- for AJAX
 from .models import Question, Bookmark, Category
 from .forms import QuestionForm, QuestionFilterForm
+from languages.models import Topic  # <-- for topic filtering in AJAX
 
 def question_list(request):
     filter_form = QuestionFilterForm(request.GET)
@@ -78,3 +80,13 @@ def submit_question(request):
         form = QuestionForm()
     
     return render(request, 'questions/submit_question.html', {'form': form})
+
+# ✅ AJAX view to load topics based on selected language
+from django.http import JsonResponse
+from .models import Topic
+
+def load_topics(request):
+    language_id = request.GET.get('language')
+    topics = Topic.objects.filter(language_id=language_id).values('id', 'name')
+    return JsonResponse(list(topics), safe=False)
+

@@ -3,71 +3,115 @@
 {% block title %}{{ language.name }} Interview Questions - TechStack{% endblock %}
 
 {% block content %}
-<div class="bg-white">
+<div class="bg-gray-50 min-h-screen">
     <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <div class="lg:flex lg:items-center lg:justify-between">
-            <div class="flex-1 min-w-0">
-                <h1 class="text-3xl font-bold leading-tight text-gray-900 sm:text-4xl">
-                    {{ language.name }}
-                </h1>
-                <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
-                    <div class="mt-2 flex items-center text-sm text-gray-500">
-                        <i class="fas fa-code flex-shrink-0 mr-1.5 text-gray-400"></i>
+        <!-- Breadcrumb -->
+        <nav class="flex mb-8" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+                <li>
+                    <a href="{% url 'home' %}" class="text-gray-500 hover:text-gray-700 transition-colors">
+                        <i class="fas fa-home"></i>
+                        <span class="sr-only">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-xs mx-2"></i>
+                        <a href="{% url 'language_list' %}" class="text-gray-500 hover:text-gray-700 transition-colors">
+                            Languages
+                        </a>
                     </div>
-                    <div class="mt-2 flex items-center text-sm text-gray-500">
-                        <i class="fas fa-list flex-shrink-0 mr-1.5 text-gray-400"></i>
-                        {{ topics.count }} Topics
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <i class="fas fa-chevron-right text-gray-400 text-xs mx-2"></i>
+                        <span class="text-gray-700 font-medium">
+                            {{ language.name }}
+                        </span>
                     </div>
-                    <div class="mt-2 flex items-center text-sm text-gray-500">
-                        <i class="fas fa-question-circle flex-shrink-0 mr-1.5 text-gray-400"></i>
-                        {{ language.questions.count }} Questions
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Language Header -->
+        <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+            <div class="flex flex-col md:flex-row md:items-center">
+                <div class="flex-shrink-0 mr-6 mb-4 md:mb-0">
+                    {% if language.logo %}
+                        <img class="h-24 w-24 object-contain bg-gray-100 p-2 rounded-lg" src="{{ language.logo.url }}" alt="{{ language.name }}">
+                    {% else %}
+                        <div class="h-24 w-24 bg-primary-100 text-primary-700 flex items-center justify-center rounded-lg">
+                            <span class="text-4xl font-bold">{{ language.name|slice:":1" }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">
+                        {{ language.name }}
+                    </h1>
+                    <div class="mt-2 flex flex-wrap gap-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-list mr-2 text-primary-500"></i>
+                            {{ topics.count }} Topics
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-question-circle mr-2 text-primary-500"></i>
+                            {{ language.questions.count }} Questions
+                        </div>
                     </div>
                 </div>
             </div>
+            
+            <div class="mt-6 prose max-w-none">
+                <p class="text-gray-700">
+                    {{ language.description }}
+                </p>
+            </div>
         </div>
 
-        <div class="mt-8">
-            <p class="text-lg text-gray-700">
-                {{ language.description }}
-            </p>
-        </div>
-
-        <!-- Topics -->
-        <div class="mt-12">
-            <h2 class="text-2xl font-bold text-gray-900">Topics</h2>
-            <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Topics Section -->
+        <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Topics</h2>
+            
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {% for topic in topics %}
-                    <div class="bg-white overflow-hidden shadow rounded-lg border border-gray-200 topic-card">
-                        <div class="px-4 py-5 sm:p-6">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                <a href="{% url 'topic_detail' language.slug topic.slug %}" class="hover:text-primary-600">
+                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden topic-card">
+                        <div class="p-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+                                <a href="{% url 'topic_detail' language.slug topic.slug %}" class="hover:text-primary-600 transition-colors">
                                     {{ topic.name }}
                                 </a>
                             </h3>
-                            <p class="mt-2 text-sm text-gray-500">
-                                {{ topic.description|truncatewords:15 }}
+                            <p class="text-gray-500 mb-4 line-clamp-3">
+                                {{ topic.description|truncatewords:20 }}
                             </p>
-                            <div class="mt-4">
-                                <a href="{% url 'topic_detail' language.slug topic.slug %}" class="text-primary-600 hover:text-primary-700 font-medium">
-                                    View Questions <span aria-hidden="true">&rarr;</span>
+                            <div class="flex items-center justify-between">
+                                <a href="{% url 'topic_detail' language.slug topic.slug %}" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium transition-colors">
+                                    View Questions <i class="fas fa-arrow-right ml-1 text-xs"></i>
                                 </a>
+                                <span class="text-sm text-gray-500">
+                                    <i class="fas fa-question-circle mr-1"></i>
+                                    {{ topic.questions.count }}
+                                </span>
                             </div>
                         </div>
                     </div>
                 {% empty %}
-                    <div class="col-span-full text-center py-8">
-                        <p class="text-gray-500">No topics available for this language yet.</p>
+                    <div class="col-span-full text-center py-12 bg-gray-50 rounded-lg">
+                        <i class="fas fa-folder-open text-5xl text-gray-300 mb-3"></i>
+                        <h3 class="text-lg font-medium text-gray-900 mb-1">No topics available</h3>
+                        <p class="text-gray-500">There are no topics available for this language yet.</p>
                     </div>
                 {% endfor %}
             </div>
         </div>
 
-        <!-- Questions by Difficulty -->
-        <div class="mt-12">
-            <h2 class="text-2xl font-bold text-gray-900">Interview Questions</h2>
+        <!-- Questions by Difficulty Section -->
+        <div class="bg-white rounded-xl shadow-sm p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Interview Questions</h2>
             
             <!-- Tabs -->
-            <div class="mt-6">
+            <div class="mb-8">
                 <div class="sm:hidden">
                     <label for="difficulty-tabs" class="sr-only">Select a difficulty</label>
                     <select id="difficulty-tabs" name="difficulty-tabs" class="block w-full rounded-md border-gray-300 focus:border-primary-500 focus:ring-primary-500">
@@ -77,24 +121,22 @@
                     </select>
                 </div>
                 <div class="hidden sm:block">
-                    <div class="border-b border-gray-200">
-                        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                            <button class="difficulty-tab border-primary-500 text-primary-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="easy">
-                                Easy
-                            </button>
-                            <button class="difficulty-tab border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="medium">
-                                Medium
-                            </button>
-                            <button class="difficulty-tab border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" data-tab="hard">
-                                Hard
-                            </button>
-                        </nav>
-                    </div>
+                    <nav class="flex space-x-4" aria-label="Tabs">
+                        <button class="difficulty-tab px-3 py-2 text-sm font-medium rounded-md bg-primary-100 text-primary-700" data-tab="easy">
+                            Easy
+                        </button>
+                        <button class="difficulty-tab px-3 py-2 text-sm font-medium rounded-md text-gray-500 hover:text-gray-700 bg-white hover:bg-gray-50" data-tab="medium">
+                            Medium
+                        </button>
+                        <button class="difficulty-tab px-3 py-2 text-sm font-medium rounded-md text-gray-500 hover:text-gray-700 bg-white hover:bg-gray-50" data-tab="hard">
+                            Hard
+                        </button>
+                    </nav>
                 </div>
             </div>
             
             <!-- Questions Lists -->
-            <div class="mt-6">
+            <div>
                 <div id="easy-questions" class="difficulty-content">
                     {% include 'questions/question_list_partial.html' with questions=easy_questions %}
                 </div>
@@ -109,39 +151,94 @@
     </div>
 </div>
 
+<!-- Code Editor Modal (Same as in topic_detail.html) -->
+<div id="code-editor-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-6xl h-5/6 flex flex-col">
+        <div class="flex items-center justify-between border-b border-gray-200 p-4">
+            <h3 class="text-lg font-medium text-gray-900" id="modal-question-title">Practice Question</h3>
+            <button id="close-modal" class="text-gray-400 hover:text-gray-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+            <div class="w-full md:w-1/2 p-4 overflow-y-auto border-r border-gray-200">
+                <div id="question-content" class="prose max-w-none mb-4"></div>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h4 class="font-medium text-gray-900 mb-2">Expected Output:</h4>
+                    <pre id="expected-output" class="bg-gray-800 text-white p-3 rounded text-sm"></pre>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 flex flex-col">
+                <div class="border-b border-gray-200 p-2 flex">
+                    <select id="language-selector" class="text-sm border-gray-300 rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500">
+                        <option value="javascript">JavaScript</option>
+                        <option value="python">Python</option>
+                        <option value="java">Java</option>
+                        <option value="cpp">C++</option>
+                    </select>
+                </div>
+                <div id="code-editor" class="flex-1"></div>
+                <div class="border-t border-gray-200 p-4">
+                    <div class="flex justify-between">
+                        <button id="run-code" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                            <i class="fas fa-play mr-2"></i> Run Code
+                        </button>
+                        <button id="reset-code" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
+                            <i class="fas fa-undo mr-2"></i> Reset
+                        </button>
+                    </div>
+                    <div id="output-container" class="mt-4 hidden">
+                        <h4 class="font-medium text-gray-900 mb-2">Output:</h4>
+                        <pre id="code-output" class="bg-gray-800 text-white p-3 rounded text-sm"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     /* Card hover effect */
     .topic-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: all 0.3s ease;
     }
     
     .topic-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        border-color: rgba(var(--color-primary-500), 0.5);
+    }
+    
+    /* Animation for content */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .topic-card {
+        animation: fadeInUp 0.5s ease-out forwards;
     }
     
     /* Tab animations */
     .difficulty-tab {
-        position: relative;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
     }
     
-    .difficulty-tab::after {
-        content: '';
-        position: absolute;
-        bottom: -2px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background-color: #0ea5e9;
-        transition: width 0.3s ease;
+    /* Line clamp for description */
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
     
-    .difficulty-tab:hover::after {
-        width: 100%;
-    }
-    
-    /* Animation for content */
+    /* Animation for tab content */
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -152,10 +249,15 @@
     }
 </style>
 
-{% block extra_js %}
 <script>
-    // Tab functionality
     document.addEventListener('DOMContentLoaded', function() {
+        // Stagger animation of topic cards
+        const topicCards = document.querySelectorAll('.topic-card');
+        topicCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+        
+        // Tab functionality
         const tabs = document.querySelectorAll('.difficulty-tab');
         const contents = document.querySelectorAll('.difficulty-content');
         const select = document.getElementById('difficulty-tabs');
@@ -172,11 +274,11 @@
             // Update tabs
             tabs.forEach(tab => {
                 if (tab.dataset.tab === tabName) {
-                    tab.classList.add('border-primary-500', 'text-primary-600');
-                    tab.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    tab.classList.add('bg-primary-100', 'text-primary-700');
+                    tab.classList.remove('text-gray-500', 'hover:text-gray-700', 'bg-white', 'hover:bg-gray-50');
                 } else {
-                    tab.classList.remove('border-primary-500', 'text-primary-600');
-                    tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                    tab.classList.remove('bg-primary-100', 'text-primary-700');
+                    tab.classList.add('text-gray-500', 'hover:text-gray-700', 'bg-white', 'hover:bg-gray-50');
                 }
             });
             
@@ -200,19 +302,43 @@
             });
         }
         
-        // Animation for topic cards
-        const topicCards = document.querySelectorAll('.topic-card');
-        topicCards.forEach((card, index) => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, 100 + (index * 100));
+        // Code Editor Modal (Same as in topic_detail.html)
+        const modal = document.getElementById('code-editor-modal');
+        const closeModal = document.getElementById('close-modal');
+        const practiceButtons = document.querySelectorAll('.practice-btn');
+        const modalTitle = document.getElementById('modal-question-title');
+        const questionContent = document.getElementById('question-content');
+        const expectedOutput = document.getElementById('expected-output');
+        const runCodeBtn = document.getElementById('run-code');
+        const resetCodeBtn = document.getElementById('reset-code');
+        const outputContainer = document.getElementById('output-container');
+        const codeOutput = document.getElementById('code-output');
+        
+        // Sample code templates
+        const codeTemplates = {
+            javascript: `function solution(input) {\n  // Your code here\n  \n  return result;\n}`,
+            python: `def solution(input):\n    # Your code here\n    \n    return result`,
+            java: `public class Solution {\n    public static void main(String[] args) {\n        // Your code here\n    }\n}`,
+            cpp: `#include <iostream>\n\nint main() {\n    // Your code here\n    \n    return 0;\n}`
+        };
+        
+        // Initialize code editor (using a placeholder - you'll need to implement with a real editor like CodeMirror or Monaco)
+        let codeEditor = {
+            setValue: function(value) {
+                document.getElementById('code-editor').textContent = value;
+            },
+            getValue: function() {
+                return document.getElementById('code-editor').textContent;
+            }
+        };
+        
+        // Language selector
+        const languageSelector = document.getElementById('language-selector');
+        languageSelector.addEventListener('change', function() {
+            codeEditor.setValue(codeTemplates[this.value]);
         });
+        
+        // Open modal functionality would be added here if practice buttons exist in this template
     });
 </script>
 {% endblock %}
-{% endblock %}  

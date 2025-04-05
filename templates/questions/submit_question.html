@@ -4,18 +4,16 @@
 {% block title %}Submit a Question - TechStack{% endblock %}
 
 {% block content %}
-<div class="bg-white perspective-container">
+<div class="bg-gradient-to-b from-blue-50 to-white min-h-screen">
     <div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div class="mb-8 page-header">
-            <h1 class="text-3xl font-bold leading-tight text-gray-900 glow-text">
-                Submit a Question
-            </h1>
+            <h1 class="text-3xl font-bold leading-tight text-gray-900 blue-glow">Submit a Question</h1>
             <p class="mt-2 text-gray-600 subtitle-text">
                 Share an interview question with the community. Your submission will be reviewed before being published.
             </p>
         </div>
 
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg form-container">
+        <div class="bg-white shadow-lg overflow-hidden sm:rounded-lg form-container border border-blue-100">
             <div class="form-particles-container">
                 <div class="particle"></div>
                 <div class="particle"></div>
@@ -23,14 +21,14 @@
                 <div class="particle"></div>
                 <div class="particle"></div>
             </div>
-            
+
             <form method="post" class="submission-form">
                 {% csrf_token %}
                 <div class="px-4 py-5 sm:p-6">
                     <div class="form-field title-field">
                         {{ form.title|as_crispy_field }}
                     </div>
-                    
+
                     <div class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2">
                         <div class="form-field language-field">
                             {{ form.language|as_crispy_field }}
@@ -39,54 +37,94 @@
                             {{ form.category|as_crispy_field }}
                         </div>
                     </div>
-                    
+
                     <div class="form-field content-field mt-6">
                         {{ form.content|as_crispy_field }}
                     </div>
-                    
+
                     <div class="form-field code-field mt-6">
                         {{ form.code_snippet|as_crispy_field }}
                     </div>
-                    
+
                     <div class="grid grid-cols-1 gap-6 mt-6 sm:grid-cols-2">
                         <div class="form-field difficulty-field">
                             {{ form.difficulty|as_crispy_field }}
                         </div>
-                        <div class="form-field topics-field">
-                            {{ form.topics|as_crispy_field }}
-                        </div>
+                        
+                    </div>
+
+                    <!-- Tips Section -->
+                    <div class="mt-6 bg-blue-50 p-4 rounded-lg border border-blue-100 submission-tips">
+                        <h3 class="text-md font-medium text-gray-900 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            Tips for a Good Submission
+                        </h3>
+                        <ul class="mt-2 text-sm text-gray-600 space-y-1 pl-7 list-disc">
+                            <li>Be clear and concise in your question description</li>
+                            <li>Include any constraints or edge cases that should be considered</li>
+                            <li>Provide a code snippet if it helps illustrate the problem</li>
+                            <li>Tag with relevant topics to help others find your question</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6 form-actions">
-                    <a href="{% url 'question_list' %}" class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 mr-2 transition-all duration-300 hover:scale-105 cancel-btn">
+
+                <div class="px-4 py-3 bg-gradient-to-r from-blue-50 to-white text-right sm:px-6 form-actions">
+                    <a href="{% url 'question_list' %}" class="inline-flex justify-center py-2 px-4 border border-blue-300 shadow-sm text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-2 transition-all duration-300 hover:scale-105 cancel-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                         Cancel
                     </a>
-                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-all duration-300 hover:scale-105 submit-btn">
+                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 hover:scale-105 submit-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
                         Submit Question
                     </button>
                 </div>
             </form>
         </div>
+
+        <div class="mt-8 bg-white shadow-md rounded-lg border border-blue-100 p-6 animate-fade-in" style="animation-delay: 0.8s;">
+            <h3 class="text-lg font-medium text-gray-900 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                Community Guidelines
+            </h3>
+            <div class="mt-4 text-sm text-gray-600">
+                <p>By submitting a question, you agree to our community guidelines:</p>
+                <ul class="mt-2 space-y-1 pl-5 list-disc">
+                    <li>Questions should be relevant to technical interviews</li>
+                    <li>Avoid posting solutions to the questions</li>
+                    <li>Be respectful and constructive in your submissions</li>
+                    <li>Do not post questions from active coding competitions</li>
+                    <li>Cite sources if you're sharing a question from a book or website</li>
+                </ul>
+            </div>
+            <div class="mt-4 text-sm text-gray-500">
+                <p>Questions that don't meet these guidelines may be edited or removed by moderators.</p>
+            </div>
+        </div>
     </div>
 </div>
 
+
 <style>
     /* 3D and Animation Effects */
-    .perspective-container {
-        perspective: 1000px;
-    }
-    
     .page-header {
         animation: slideDown 0.8s ease-out forwards;
     }
     
-    .glow-text {
-        text-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+    .blue-glow {
+        text-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
         transition: text-shadow 0.3s ease;
     }
     
-    .glow-text:hover {
-        text-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+    .blue-glow:hover {
+        text-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
     }
     
     .subtitle-text {
@@ -119,7 +157,7 @@
         position: absolute;
         width: 8px;
         height: 8px;
-        background: rgba(14, 165, 233, 0.3);
+        background: rgba(59, 130, 246, 0.3);
         border-radius: 50%;
         pointer-events: none;
         opacity: 0;
@@ -144,7 +182,7 @@
     }
     
     .form-field:hover label {
-        color: #0ea5e9;
+        color: #3b82f6;
     }
     
     .title-field { animation-delay: 0.6s; }
@@ -208,6 +246,17 @@
         opacity: 1;
     }
     
+    .submission-tips {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 1.3s;
+        transition: transform 0.3s ease;
+    }
+    
+    .submission-tips:hover {
+        transform: translateY(-5px);
+    }
+    
     /* Animations */
     @keyframes slideDown {
         from { 
@@ -254,24 +303,245 @@
         75% { transform: translateY(10px) translateX(5px); }
         100% { transform: translateY(0) translateX(0); }
     }
+    
+    .animate-fade-in {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out forwards;
+    }
 </style>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // 3D tilt effect for the form container
         const formContainer = document.querySelector('.form-container');
-        
+
         if (formContainer) {
-            formContainer.addEventListener('mousemove', function(e) {
+            formContainer.addEventListener('mousemove', function (e) {
                 const rect = this.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                
+
                 const xRotation = ((y - rect.height / 2) / rect.height) * 5;
                 const yRotation = ((x - rect.width / 2) / rect.width) * -5;
-                
+
                 this.style.transform = `perspective(1000px) rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
             });
-            
-            formContainer.addEventListener('mouseout', function() {
-                this.style.transform = 'perspective(1000px) rotateX(0)
+
+            formContainer.addEventListener('mouseout', function () {
+                this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        }
+
+        // Animate particles
+        const particles = document.querySelectorAll('.particle');
+        const formParticlesContainer = document.querySelector('.form-particles-container');
+
+        if (particles.length > 0 && formParticlesContainer) {
+            particles.forEach((particle) => {
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animation = `float ${3 + Math.random() * 4}s ease-in-out infinite`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+            });
+
+            formContainer.addEventListener('mouseenter', function () {
+                particles.forEach((particle) => {
+                    particle.style.opacity = '1';
+                });
+            });
+
+            formContainer.addEventListener('mouseleave', function () {
+                particles.forEach((particle) => {
+                    particle.style.opacity = '0';
+                });
+            });
+        }
+
+        // Form field focus effects
+        const formFields = document.querySelectorAll('.form-field');
+        formFields.forEach((field) => {
+            const input = field.querySelector('input, textarea, select');
+            if (input) {
+                input.addEventListener('focus', function () {
+                    field.style.transform = 'translateZ(20px)';
+                    field.style.zIndex = '10';
+                    field.style.boxShadow =
+                        '0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04)';
+                });
+
+                input.addEventListener('blur', function () {
+                    field.style.transform = 'translateZ(0)';
+                    field.style.zIndex = '2';
+                    field.style.boxShadow = 'none';
+                });
+            }
+        });
+
+        // Character counter for content field
+        const contentField = document.querySelector('textarea[name="content"]');
+        if (contentField) {
+            const charCounter = document.createElement('div');
+            charCounter.className = 'text-xs text-gray-500 mt-1 text-right';
+            charCounter.innerHTML = `0 / 5000 characters`;
+            contentField.parentNode.appendChild(charCounter);
+
+            contentField.addEventListener('input', function () {
+                const count = this.value.length;
+                const maxLength = 5000;
+                charCounter.innerHTML = `${count} / ${maxLength} characters`;
+
+                if (count > maxLength) {
+                    charCounter.classList.add('text-red-500');
+                    charCounter.classList.remove('text-gray-500');
+                } else {
+                    charCounter.classList.remove('text-red-500');
+                    charCounter.classList.add('text-gray-500');
+                }
+            });
+        }
+
+        // Code snippet syntax highlighting
+        const codeField = document.querySelector('textarea[name="code_snippet"]');
+        if (codeField) {
+            const languageSelector = document.createElement('div');
+            languageSelector.className = 'text-xs text-gray-500 mt-1 flex items-center';
+            languageSelector.innerHTML = `
+                <span class="mr-2">Language:</span>
+                <select class="text-xs border border-gray-300 rounded px-2 py-1 code-language-selector">
+                    <option value="python">Python</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="java">Java</option>
+                    <option value="cpp">C++</option>
+                    <option value="csharp">C#</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="go">Go</option>
+                    <option value="php">PHP</option>
+                    <option value="swift">Swift</option>
+                    <option value="kotlin">Kotlin</option>
+                </select>
+            `;
+            codeField.parentNode.appendChild(languageSelector);
+
+            const toolbar = document.createElement('div');
+            toolbar.className =
+                'text-xs bg-gray-100 border border-gray-300 rounded-t p-1 flex items-center space-x-2 mt-2';
+            toolbar.innerHTML = `
+                <button type="button" class="px-2 py-1 bg-white rounded border border-gray-300 hover:bg-gray-50 code-indent">Indent</button>
+                <button type="button" class="px-2 py-1 bg-white rounded border border-gray-300 hover:bg-gray-50 code-format">Format</button>
+            `;
+            codeField.parentNode.insertBefore(toolbar, codeField);
+
+            codeField.className += ' font-mono text-sm rounded-t-none';
+            codeField.style.backgroundColor = '#1e293b';
+            codeField.style.color = '#e2e8f0';
+
+            const indentBtn = document.querySelector('.code-indent');
+            if (indentBtn) {
+                indentBtn.addEventListener('click', function () {
+                    const start = codeField.selectionStart;
+                    const end = codeField.selectionEnd;
+                    const selectedText = codeField.value.substring(start, end);
+                    const indented = selectedText
+                        .split('\n')
+                        .map((line) => '    ' + line)
+                        .join('\n');
+
+                    codeField.setRangeText(indented, start, end, 'select');
+                });
+            }
+        }
+
+        // Form validation enhancement
+        const form = document.querySelector('.submission-form');
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                let isValid = true;
+                const requiredFields = form.querySelectorAll(
+                    'input[required], textarea[required], select[required]'
+                );
+
+                requiredFields.forEach((field) => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('border-red-500');
+
+                        const errorMsg = field.parentNode.querySelector('.error-message');
+                        if (!errorMsg) {
+                            const msg = document.createElement('p');
+                            msg.className = 'text-red-500 text-xs mt-1 error-message';
+                            msg.innerText = 'This field is required';
+                            field.parentNode.appendChild(msg);
+                        }
+                    } else {
+                        field.classList.remove('border-red-500');
+                        const errorMsg = field.parentNode.querySelector('.error-message');
+                        if (errorMsg) {
+                            errorMsg.remove();
+                        }
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault();
+                    const firstError = form.querySelector('.border-red-500');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                } else {
+                    const submitBtn = form.querySelector('.submit-btn');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = `
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Submitting...
+                        `;
+                    }
+                }
+            });
+
+            const allFields = form.querySelectorAll('input, textarea, select');
+            allFields.forEach((field) => {
+                field.addEventListener('input', function () {
+                    this.classList.remove('border-red-500');
+                    const errorMsg = this.parentNode.querySelector('.error-message');
+                    if (errorMsg) {
+                        errorMsg.remove();
+                    }
+                });
+            });
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const languageSelect = document.getElementById('id_language');
+        const topicSelect = document.getElementById('id_topics');
+    
+        if (languageSelect && topicSelect) {
+            languageSelect.addEventListener('change', function () {
+                const languageId = this.value;
+                if (!languageId) {
+                    topicSelect.innerHTML = '<option value="">Select a topic</option>';
+                    return;
+                }
+    
+                fetch(`/ajax/load-topics/?language=${languageId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        topicSelect.innerHTML = '<option value="">Select a topic</option>';
+                        data.forEach(topic => {
+                            const option = document.createElement('option');
+                            option.value = topic.id;
+                            option.textContent = topic.name;
+                            topicSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error loading topics:', error));
+            });
+        }
+    });
+    
+</script>
+{% endblock %}
+

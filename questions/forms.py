@@ -1,33 +1,36 @@
 from django import forms
-from .models import Question, Category, DifficultyLevel  # Import DifficultyLevel
+from .models import Question, Category, DifficultyLevel
 from languages.models import Language, Topic
+
+# Form for submitting a new question
 
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['title', 'content', 'code_snippet', 'difficulty', 'language', 'topics', 'category']
+        fields = ['title', 'language', 'category', 'content', 'code_snippet', 'difficulty', 'topics']
         widgets = {
-            'content': forms.Textarea(attrs={'rows': 5}),
-            'code_snippet': forms.Textarea(attrs={'rows': 8, 'class': 'font-mono'}),
+            'language': forms.Select(attrs={'id': 'id_language'}),
+            'topics': forms.Select(attrs={'id': 'id_topics'}),
         }
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # Default empty queryset for topics
         self.fields['topics'].queryset = Topic.objects.none()
-        
+
+        # Dynamically load topics based on selected language
         if 'language' in self.data:
             try:
                 language_id = int(self.data.get('language'))
                 self.fields['topics'].queryset = Topic.objects.filter(language_id=language_id)
             except (ValueError, TypeError):
-                pass
+                pass  # fallback to empty queryset
         elif self.instance.pk:
             self.fields['topics'].queryset = self.instance.language.topics.all()
 
+# Form for filtering questions
 class QuestionFilterForm(forms.Form):
-    from .models import DifficultyLevel  # Import DifficultyLevel inside the class if needed
-
-    DIFFICULTY_CHOICES = [('', 'All Difficulties')] + list(DifficultyLevel.choices)  # Fix here
+    DIFFICULTY_CHOICES = [('', 'All Difficulties')] + list(DifficultyLevel.choices)
 
     difficulty = forms.ChoiceField(choices=DIFFICULTY_CHOICES, required=False)
     category = forms.ModelChoiceField(
