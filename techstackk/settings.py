@@ -68,8 +68,13 @@ WSGI_APPLICATION = 'techstackk.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'techstack',
+        'USER': 'postgres',
+        'PASSWORD':'admin',
+        'PORT':'5432',
+        'HOST':'localhost',
+
     }
 }
 
@@ -89,7 +94,7 @@ USE_TZ = True
 
 # Static & Media
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+#STATICFILES_DIRS = [BASE_DIR / "static"]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -102,12 +107,12 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 # Allauth configuration
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}
+ACCOUNT_SIGNUP_FIELDS = ['username*', 'email', 'password1*', 'password2*']
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # Change to 'mandatory' in production
 ACCOUNT_LOGOUT_ON_GET = True
-LOGIN_REDIRECT_URL = '/profile/'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Crispy forms
